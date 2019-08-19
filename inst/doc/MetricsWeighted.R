@@ -20,8 +20,24 @@ weights <- seq_len(nrow(iris))
 mae(y_num, pred_num)  # unweighted
 mae(y_num, pred_num, w = rep(1, length(y_num)))  # same
 mae(y_num, pred_num, w = weights)  # different
-
 rmse(y_num, pred_num)
+medae(y_num, pred_num, w = weights) # median absolute error
+
+# Normal deviance equals Tweedie deviance with parameter 0
+deviance_normal(y_num, pred_num)
+deviance_tweedie(y_num, pred_num, tweedie_p = 0)
+deviance_tweedie(y_num, pred_num, tweedie_p = -0.001)
+
+# Poisson deviance equals Tweedie deviance with parameter 1
+deviance_poisson(y_num, pred_num)
+deviance_tweedie(y_num, pred_num, tweedie_p = 1)
+deviance_tweedie(y_num, pred_num, tweedie_p = 1.01)
+
+# Gamma deviance equals Tweedie deviance with parameter 2
+deviance_gamma(y_num, pred_num)
+deviance_tweedie(y_num, pred_num, tweedie_p = 2)
+deviance_tweedie(y_num, pred_num, tweedie_p = 1.99)
+deviance_tweedie(y_num, pred_num, tweedie_p = 2.01)
 
 
 ## ------------------------------------------------------------------------
@@ -43,11 +59,19 @@ summary(fit_num)$r.squared
 # same
 r_squared(y_num, pred_num)
 r_squared(y_num, pred_num, deviance_function = deviance_tweedie, tweedie_p = 0)
+r_squared(y_num, pred_num, deviance_function = deviance_tweedie, tweedie_p = 1.5)
 
 # weighted
 r_squared(y_num, pred_num, w = weights)
 r_squared(y_num, pred_num, w = weights, deviance_function = deviance_gamma) 
 r_squared(y_num, pred_num, w = weights, deviance_function = deviance_tweedie, tweedie_p = 2)
+r_squared(y_num, pred_num, deviance_function = deviance_tweedie, tweedie_p = 1.5)
+
+# respect to own deviance formula
+myTweedie <- function(actual, predicted, w = NULL, ...) {
+  deviance_tweedie(actual, predicted, w, tweedie_p = 1.5, ...)
+}
+r_squared(y_num, pred_num, deviance_function = myTweedie)
 
 
 ## ------------------------------------------------------------------------
@@ -67,7 +91,7 @@ iris %>%
 iris %>% 
   mutate(pred = predict(fit_num, data = .)) %>% 
   group_by(Species) %>% 
-  do(performance(data = ., actual = "Sepal.Length", predicted = "pred"))
+  do(performance(., actual = "Sepal.Length", predicted = "pred"))
 
 # Customized output
 iris %>% 

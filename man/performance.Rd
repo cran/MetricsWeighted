@@ -2,7 +2,7 @@
 % Please edit documentation in R/performance.R
 \name{performance}
 \alias{performance}
-\title{Apply one or more metrics to columns in a data set}
+\title{Performance}
 \usage{
 performance(data, actual, predicted, w = NULL, metrics = rmse,
   key = "metric", value = "value", ...)
@@ -32,7 +32,8 @@ Applies one or more metrics to a \code{data.frame} containing columns with actua
 }
 \examples{
 ir <- iris
-ir$fitted <- lm(Sepal.Length ~ ., data = ir)$fitted
+fit_num <- lm(Sepal.Length ~ ., data = ir)
+ir$fitted <- fit_num$fitted
 performance(ir, "Sepal.Length", "fitted")
 performance(ir, "Sepal.Length", "fitted", metrics = r_squared)
 performance(ir, "Sepal.Length", "fitted", metrics = c(`R-squared` = r_squared, rmse = rmse))
@@ -44,7 +45,6 @@ performance(ir, "Sepal.Length", "fitted", metrics = r_squared,
             deviance_function = deviance_tweedie, tweedie_p = 2)
 performance(ir, "Sepal.Length", "fitted", metrics = r_squared,
             deviance_function = deviance_tweedie, tweedie_p = 0)
-
 \dontrun{
 library(dplyr)
 
@@ -61,7 +61,7 @@ iris \%>\%
 iris \%>\%
   mutate(pred = predict(fit_num, data = .)) \%>\%
   group_by(Species) \%>\%
-  do(performance(data = ., "Sepal.Length", "pred"))
+  do(performance(., "Sepal.Length", "pred"))
 
 # Multiple measures
 iris \%>\%
@@ -76,7 +76,4 @@ iris \%>\%
  do(performance(., "Sepal.Length", "pred",
                 metrics = list(rmse = rmse, mae = mae, `R-squared` = r_squared)))
 }
-}
-\author{
-Michael Mayer, \email{mayermichael79@gmail.com}
 }

@@ -2,14 +2,14 @@
 % Please edit documentation in R/deviance_bernoulli.R
 \name{deviance_bernoulli}
 \alias{deviance_bernoulli}
-\title{Bernoulli deviance}
+\title{Bernoulli Deviance}
 \usage{
 deviance_bernoulli(actual, predicted, w = NULL, ...)
 }
 \arguments{
-\item{actual}{Observed values.}
+\item{actual}{Observed values (0 or 1).}
 
-\item{predicted}{Predicted values.}
+\item{predicted}{Predicted values strictly between 0 and 1.}
 
 \item{w}{Optional case weights.}
 
@@ -19,17 +19,13 @@ deviance_bernoulli(actual, predicted, w = NULL, ...)
 A numeric vector of length one.
 }
 \description{
-Weighted average of unit Bernoulli deviance, defined as twice logLoss.
+Calculates weighted average of unit Bernoulli deviance. Defined as twice logLoss. The smaller the deviance, the better.
 }
 \examples{
 deviance_bernoulli(c(0, 0, 1, 1), c(0.1, 0.1, 0.9, 0.8))
 deviance_bernoulli(c(1, 0, 0, 1), c(0.1, 0.1, 0.9, 0.8))
 deviance_bernoulli(c(0, 0, 1, 1), c(0.1, 0.1, 0.9, 0.8), w = 1:4)
-
 }
 \seealso{
 \code{\link{logLoss}}.
-}
-\author{
-Michael Mayer, \email{mayermichael79@gmail.com}
 }

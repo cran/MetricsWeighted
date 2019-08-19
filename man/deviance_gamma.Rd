@@ -2,37 +2,35 @@
 % Please edit documentation in R/deviance_gamma.R
 \name{deviance_gamma}
 \alias{deviance_gamma}
-\title{Gamma deviance}
+\title{Gamma Deviance}
 \usage{
 deviance_gamma(actual, predicted, w = NULL, ...)
 }
 \arguments{
-\item{actual}{Observed values.}
+\item{actual}{Strictly positive observed values.}
 
-\item{predicted}{Predicted values.}
+\item{predicted}{Strictly positive predicted values.}
 
 \item{w}{Optional case weights.}
 
-\item{...}{Further arguments passed to \code{deviance_tweedie}.}
+\item{...}{Further arguments passed to \code{weighted_mean}.}
 }
 \value{
 A numeric vector of length one.
 }
 \description{
-Weighted average of (unscaled) unit Gamma deviance, see e.g. [1].
+Weighted average of (unscaled) unit Gamma deviance, see e.g. [1]. Special case of Tweedie deviance with Tweedie parameter 2. The smaller the deviance, the better.
 }
 \examples{
-deviance_gamma(1:10, (1:10)^2)
-deviance_gamma(1:10, (1:10)^2, w = rep(1, 10))
-deviance_gamma(1:10, (1:10)^2, w = 1:10)
-
+deviance_gamma(1:10, c(1:9, 12))
+deviance_gamma(1:10, c(1:9, 12), w = rep(1, 10))
+deviance_tweedie(1:10, c(1:9, 12), tweedie_p = 2)
+deviance_tweedie(1:10, c(1:9, 12), tweedie_p = 1.99)
+deviance_gamma(1:10, c(1:9, 12), w = 1:10)
 }
 \references{
-[1] Ohlsson E. and Johansson B. (2015). Non-Life Insurance Pricing with Generalized Linear Models. Springer Nature EN. ISBN 978-3642107900.
+[1] Jorgensen, B. (1997). The Theory of Dispersion Models. Chapman & Hall/CRC. ISBN 978-0412997112.
 }
 \seealso{
 \code{\link{deviance_tweedie}}.
-}
-\author{
-Michael Mayer, \email{mayermichael79@gmail.com}
 }

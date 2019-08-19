@@ -2,7 +2,7 @@
 % Please edit documentation in R/r_squared.R
 \name{r_squared}
 \alias{r_squared}
-\title{Pseudo R-squared}
+\title{Pseudo R-Squared}
 \usage{
 r_squared(actual, predicted, w = NULL, deviance_function = mse, ...)
 }
@@ -21,26 +21,28 @@ r_squared(actual, predicted, w = NULL, deviance_function = mse, ...)
 A numeric vector of length one.
 }
 \description{
-Returns (weighted) proportion of deviance explained, see e.g. [1]. For the mean-squared error as deviance, this equals the usual (weighted) R-squared.
+Returns (weighted) proportion of deviance explained, see e.g. [1]. For the mean-squared error as deviance, this equals the usual (weighted) R-squared. The higher, the better.
 }
 \examples{
 r_squared(1:10, c(1, 1:9))
 r_squared(1:10, c(1, 1:9), w = rep(1, 10))
 r_squared(1:10, c(1, 1:9), w = 1:10)
-r_squared(0:2, c(0.1, 1, 1.2), deviance_function = deviance_poisson)
-r_squared(0:2, c(0.1, 1, 1.2), w = rep(1, 3), deviance_function = deviance_poisson)
-r_squared(0:2, c(0.1, 1, 1.2), deviance_function = deviance_tweedie, tweedie_p = 1)
-r_squared(0:2, c(0.1, 1, 1.2), w = rep(1, 3), deviance_function = deviance_tweedie, tweedie_p = 1)
-r_squared(0:2, c(0.1, 1, 1.2), deviance_function = deviance_normal)
-r_squared(0:2, c(0.1, 1, 1.2))
+r_squared(1:10, c(1, 1:9), deviance_function = deviance_normal)
+r_squared(0:2, c(0.1, 1, 2), deviance_function = deviance_poisson)
+r_squared(0:2, c(0.1, 1, 2), w = rep(1, 3), deviance_function = deviance_poisson)
+r_squared(0:2, c(0.1, 1, 2), deviance_function = deviance_tweedie, tweedie_p = 1)
+r_squared(0:2, c(0.1, 1, 2), w = rep(1, 3),
+  deviance_function = deviance_tweedie, tweedie_p = 1)
 
+# respect to own deviance formula
+myTweedie <- function(actual, predicted, w = NULL, ...) {
+  deviance_tweedie(actual, predicted, w, tweedie_p = 1.5, ...)
+}
+r_squared(1:10, c(1, 1:9), deviance_function = myTweedie)
 }
 \references{
 [1] Cohen, Jacob. et al. (2002). Applied Multiple Regression/Correlation Analysis for the Behavioral Sciences (3rd ed.). Routledge. ISBN 978-0805822236.
 }
 \seealso{
 \code{\link{deviance_normal}, \link{mse}}.
-}
-\author{
-Michael Mayer, \email{mayermichael79@gmail.com}
 }

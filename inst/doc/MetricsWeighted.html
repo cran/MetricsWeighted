@@ -13,7 +13,7 @@
 
 <meta name="author" content="Michael Mayer" />
 
-<meta name="date" content="2019-07-24" />
+<meta name="date" content="2019-08-19" />
 
 <title>MetricsWeighted</title>
 
@@ -21,9 +21,9 @@
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
+code.sourceCode > span { display: inline-block; line-height: 1.25; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -33,14 +33,16 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -49,9 +51,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -304,14 +306,14 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">MetricsWeighted</h1>
 <h4 class="author">Michael Mayer</h4>
-<h4 class="date">2019-07-24</h4>
+<h4 class="date">2019-08-19</h4>
 
 
 
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">library</span>(MetricsWeighted)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(MetricsWeighted)</span></code></pre></div>
 <div id="introduction" class="section level2">
 <h2>Introduction</h2>
-<p>The R package <code>MetricsWeighted</code> provides weighted versions of different machine learning metrics and performance measures as well as tools to use it within a <code>dplyr</code> chain.</p>
+<p>The R package <code>MetricsWeighted</code> provides weighted versions of different machine learning metrics, scoring functions and performance measures as well as tools to use it within a <code>dplyr</code> chain.</p>
 </div>
 <div id="installation" class="section level2">
 <h2>Installation</h2>
@@ -323,15 +325,15 @@ install_github(&quot;mayer79/MetricsWeighted&quot;)</code></pre>
 </div>
 <div id="illustration" class="section level2">
 <h2>Illustration</h2>
-<div id="metrics-and-performance-measures" class="section level3">
-<h3>Metrics and Performance Measures</h3>
-<p>Currently, the following metrics and performance measures are available.</p>
+<div id="metrics-scoring-functions-and-performance-measures" class="section level3">
+<h3>Metrics, Scoring Functions and Performance Measures</h3>
+<p>Currently, the following metrics, scoring functions and performance measures are available:</p>
 <ul>
-<li><p><code>accuracy</code>, <code>recall</code>, <code>precision</code>, <code>f1_score</code>, and <code>classification_error</code>: Typical binary performance measures derived from the confusion matrix. Require binary predictions.</p></li>
-<li><p><code>AUC</code> and <code>gini_coefficient</code>: Area under the receiver operating curve (ROC) and the closely related Gini coefficient. Written for binary targets but not necessarly binary predictions.</p></li>
-<li><p><code>deviance_bernoulli</code> and <code>logLoss</code>: Further metrics relevant for binary targets, namely the average unit deviance of the binary logistic regression model and the closely connected logLoss.</p></li>
-<li><p><code>mse</code>, <code>mae</code>, <code>mape</code>, and <code>rmse</code>: Typical regression metrics (mean-squared error, mean-absolute error, mean absolute percentage error and root-mean-squared error).</p></li>
-<li><p><code>deviance_tweedie</code>: (Unscaled) average unit Tweedie deviance with parameter <code>tweedie_p</code>.</p></li>
+<li><p><code>accuracy</code>, <code>recall</code>, <code>precision</code>, <code>f1_score</code>, and <code>classification_error</code>: Typical binary performance measures derived from the confusion matrix, see e.g. (<a href="https://en.wikipedia.org/wiki/Precision_and_recall" class="uri">https://en.wikipedia.org/wiki/Precision_and_recall</a>). Require binary predictions. Except for classification error, high values are better.</p></li>
+<li><p><code>AUC</code> and <code>gini_coefficient</code>: Area under the receiver operating curve (ROC) and the closely related Gini coefficient. Actual values must be 0 or 1, while predictions can take any value (only their order is relevant). The higher, the better.</p></li>
+<li><p><code>deviance_bernoulli</code> and <code>logLoss</code>: Further metrics relevant for binary targets, namely the average unit deviance of the <em>binary</em> logistic regression model (0-1 response) and logLoss (half that deviance). As with all deviance measures, smaller values are better.</p></li>
+<li><p><code>mse</code>, <code>mae</code>, <code>mape</code>, <code>rmse</code>, and <code>medae</code>: Typical regression metrics (mean-squared error, mean absolute error, mean absolute percentage error, root-mean-squared error, and median absolute error). The lower, the better.</p></li>
+<li><p><code>deviance_tweedie</code>: (Unscaled) average unit Tweedie deviance with parameter <code>tweedie_p</code>, see [1] and (<a href="https://en.wikipedia.org/wiki/Tweedie_distribution" class="uri">https://en.wikipedia.org/wiki/Tweedie_distribution</a>) for a reference of the underlying formula.</p></li>
 <li><p><code>deviance_normal</code>, <code>deviance_gamma</code>, and <code>deviance_poisson</code>: Special cases of Tweedie. <code>deviance_normal</code> equals mean-squared error.</p></li>
 </ul>
 <p>They all take four arguments:</p>
@@ -341,65 +343,104 @@ install_github(&quot;mayer79/MetricsWeighted&quot;)</code></pre>
 <li><p><code>w</code>: Optional vector with case weights.</p></li>
 <li><p><code>...</code>: Further arguments.</p></li>
 </ol>
-<p>Notable exception is <code>deviance_tweedie</code> that requires the Tweedie power as additional parameter. The value 0 corresponds to the Gaussian/normal deviance, the value 1 to the Poisson deviance and the value 2 to the Gamma deviance, see e.g. [1]. For fixed actual and predicted values, the Tweedie deviance is continuous with respect to this parameter.</p>
+<p>Notable exception is <code>deviance_tweedie</code>. It requires the Tweedie power as additional parameter. The value 0 corresponds to the Gaussian/normal deviance, the value 1 to the Poisson deviance and the value 2 to the Gamma deviance, see e.g. [1]. For <span class="math inline">\(0 &lt; p &lt; 1\)</span>, the Tweedie distribution is undefined.</p>
+<p>For fixed actual and predicted values, the Tweedie deviance is continuous with respect to this parameter.</p>
 <div id="examples-regression" class="section level4">
 <h4>Examples: Regression</h4>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="co"># The data</span></a>
-<a class="sourceLine" id="cb4-2" title="2">y_num &lt;-<span class="st"> </span>iris[[<span class="st">&quot;Sepal.Length&quot;</span>]]</a>
-<a class="sourceLine" id="cb4-3" title="3">fit_num &lt;-<span class="st"> </span><span class="kw">lm</span>(Sepal.Length <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> iris)</a>
-<a class="sourceLine" id="cb4-4" title="4">pred_num &lt;-<span class="st"> </span>fit_num<span class="op">$</span>fitted</a>
-<a class="sourceLine" id="cb4-5" title="5">weights &lt;-<span class="st"> </span><span class="kw">seq_len</span>(<span class="kw">nrow</span>(iris))</a>
-<a class="sourceLine" id="cb4-6" title="6"></a>
-<a class="sourceLine" id="cb4-7" title="7"><span class="co"># Performance metrics</span></a>
-<a class="sourceLine" id="cb4-8" title="8"><span class="kw">mae</span>(y_num, pred_num)  <span class="co"># unweighted</span></a>
-<a class="sourceLine" id="cb4-9" title="9"><span class="co">#&gt; [1] 0.2428628</span></a>
-<a class="sourceLine" id="cb4-10" title="10"><span class="kw">mae</span>(y_num, pred_num, <span class="dt">w =</span> <span class="kw">rep</span>(<span class="dv">1</span>, <span class="kw">length</span>(y_num)))  <span class="co"># same</span></a>
-<a class="sourceLine" id="cb4-11" title="11"><span class="co">#&gt; [1] 0.2428628</span></a>
-<a class="sourceLine" id="cb4-12" title="12"><span class="kw">mae</span>(y_num, pred_num, <span class="dt">w =</span> weights)  <span class="co"># different</span></a>
-<a class="sourceLine" id="cb4-13" title="13"><span class="co">#&gt; [1] 0.2561237</span></a>
-<a class="sourceLine" id="cb4-14" title="14"></a>
-<a class="sourceLine" id="cb4-15" title="15"><span class="kw">rmse</span>(y_num, pred_num)</a>
-<a class="sourceLine" id="cb4-16" title="16"><span class="co">#&gt; [1] 0.300627</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># The data</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>y_num &lt;-<span class="st"> </span>iris[[<span class="st">&quot;Sepal.Length&quot;</span>]]</span>
+<span id="cb4-3"><a href="#cb4-3"></a>fit_num &lt;-<span class="st"> </span><span class="kw">lm</span>(Sepal.Length <span class="op">~</span><span class="st"> </span>., <span class="dt">data =</span> iris)</span>
+<span id="cb4-4"><a href="#cb4-4"></a>pred_num &lt;-<span class="st"> </span>fit_num<span class="op">$</span>fitted</span>
+<span id="cb4-5"><a href="#cb4-5"></a>weights &lt;-<span class="st"> </span><span class="kw">seq_len</span>(<span class="kw">nrow</span>(iris))</span>
+<span id="cb4-6"><a href="#cb4-6"></a></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="co"># Performance metrics</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a><span class="kw">mae</span>(y_num, pred_num)  <span class="co"># unweighted</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="co">#&gt; [1] 0.2428628</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="kw">mae</span>(y_num, pred_num, <span class="dt">w =</span> <span class="kw">rep</span>(<span class="dv">1</span>, <span class="kw">length</span>(y_num)))  <span class="co"># same</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="co">#&gt; [1] 0.2428628</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a><span class="kw">mae</span>(y_num, pred_num, <span class="dt">w =</span> weights)  <span class="co"># different</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a><span class="co">#&gt; [1] 0.2561237</span></span>
+<span id="cb4-14"><a href="#cb4-14"></a><span class="kw">rmse</span>(y_num, pred_num)</span>
+<span id="cb4-15"><a href="#cb4-15"></a><span class="co">#&gt; [1] 0.300627</span></span>
+<span id="cb4-16"><a href="#cb4-16"></a><span class="kw">medae</span>(y_num, pred_num, <span class="dt">w =</span> weights) <span class="co"># median absolute error</span></span>
+<span id="cb4-17"><a href="#cb4-17"></a><span class="co">#&gt; [1] 0.2381186</span></span>
+<span id="cb4-18"><a href="#cb4-18"></a></span>
+<span id="cb4-19"><a href="#cb4-19"></a><span class="co"># Normal deviance equals Tweedie deviance with parameter 0</span></span>
+<span id="cb4-20"><a href="#cb4-20"></a><span class="kw">deviance_normal</span>(y_num, pred_num)</span>
+<span id="cb4-21"><a href="#cb4-21"></a><span class="co">#&gt; [1] 0.09037657</span></span>
+<span id="cb4-22"><a href="#cb4-22"></a><span class="kw">deviance_tweedie</span>(y_num, pred_num, <span class="dt">tweedie_p =</span> <span class="dv">0</span>)</span>
+<span id="cb4-23"><a href="#cb4-23"></a><span class="co">#&gt; [1] 0.09037657</span></span>
+<span id="cb4-24"><a href="#cb4-24"></a><span class="kw">deviance_tweedie</span>(y_num, pred_num, <span class="dt">tweedie_p =</span> <span class="fl">-0.001</span>)</span>
+<span id="cb4-25"><a href="#cb4-25"></a><span class="co">#&gt; [1] 0.09053778</span></span>
+<span id="cb4-26"><a href="#cb4-26"></a></span>
+<span id="cb4-27"><a href="#cb4-27"></a><span class="co"># Poisson deviance equals Tweedie deviance with parameter 1</span></span>
+<span id="cb4-28"><a href="#cb4-28"></a><span class="kw">deviance_poisson</span>(y_num, pred_num)</span>
+<span id="cb4-29"><a href="#cb4-29"></a><span class="co">#&gt; [1] 0.01531595</span></span>
+<span id="cb4-30"><a href="#cb4-30"></a><span class="kw">deviance_tweedie</span>(y_num, pred_num, <span class="dt">tweedie_p =</span> <span class="dv">1</span>)</span>
+<span id="cb4-31"><a href="#cb4-31"></a><span class="co">#&gt; [1] 0.01531595</span></span>
+<span id="cb4-32"><a href="#cb4-32"></a><span class="kw">deviance_tweedie</span>(y_num, pred_num, <span class="dt">tweedie_p =</span> <span class="fl">1.01</span>)</span>
+<span id="cb4-33"><a href="#cb4-33"></a><span class="co">#&gt; [1] 0.01504756</span></span>
+<span id="cb4-34"><a href="#cb4-34"></a></span>
+<span id="cb4-35"><a href="#cb4-35"></a><span class="co"># Gamma deviance equals Tweedie deviance with parameter 2</span></span>
+<span id="cb4-36"><a href="#cb4-36"></a><span class="kw">deviance_gamma</span>(y_num, pred_num)</span>
+<span id="cb4-37"><a href="#cb4-37"></a><span class="co">#&gt; [1] 0.002633186</span></span>
+<span id="cb4-38"><a href="#cb4-38"></a><span class="kw">deviance_tweedie</span>(y_num, pred_num, <span class="dt">tweedie_p =</span> <span class="dv">2</span>)</span>
+<span id="cb4-39"><a href="#cb4-39"></a><span class="co">#&gt; [1] 0.002633186</span></span>
+<span id="cb4-40"><a href="#cb4-40"></a><span class="kw">deviance_tweedie</span>(y_num, pred_num, <span class="dt">tweedie_p =</span> <span class="fl">1.99</span>)</span>
+<span id="cb4-41"><a href="#cb4-41"></a><span class="co">#&gt; [1] 0.002679764</span></span>
+<span id="cb4-42"><a href="#cb4-42"></a><span class="kw">deviance_tweedie</span>(y_num, pred_num, <span class="dt">tweedie_p =</span> <span class="fl">2.01</span>)</span>
+<span id="cb4-43"><a href="#cb4-43"></a><span class="co">#&gt; [1] 0.00258742</span></span></code></pre></div>
 </div>
 <div id="examples-binary-classification" class="section level4">
 <h4>Examples: Binary classification</h4>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" title="1"><span class="co"># The data</span></a>
-<a class="sourceLine" id="cb5-2" title="2">y_cat &lt;-<span class="st"> </span>iris[[<span class="st">&quot;Species&quot;</span>]] <span class="op">==</span><span class="st"> &quot;setosa&quot;</span></a>
-<a class="sourceLine" id="cb5-3" title="3">fit_cat &lt;-<span class="st"> </span><span class="kw">glm</span>(y_cat <span class="op">~</span><span class="st"> </span>Sepal.Length, <span class="dt">data =</span> iris, <span class="dt">family =</span> <span class="kw">binomial</span>())</a>
-<a class="sourceLine" id="cb5-4" title="4">pred_cat &lt;-<span class="st"> </span><span class="kw">predict</span>(fit_cat, <span class="dt">type =</span> <span class="st">&quot;response&quot;</span>)</a>
-<a class="sourceLine" id="cb5-5" title="5"></a>
-<a class="sourceLine" id="cb5-6" title="6"><span class="co"># Performance metrics</span></a>
-<a class="sourceLine" id="cb5-7" title="7"><span class="kw">AUC</span>(y_cat, pred_cat)  <span class="co"># unweighted</span></a>
-<a class="sourceLine" id="cb5-8" title="8"><span class="co">#&gt; [1] 0.9586</span></a>
-<a class="sourceLine" id="cb5-9" title="9"><span class="kw">AUC</span>(y_cat, pred_cat, <span class="dt">w =</span> weights)  <span class="co"># weighted</span></a>
-<a class="sourceLine" id="cb5-10" title="10"><span class="co">#&gt; [1] 0.9629734</span></a>
-<a class="sourceLine" id="cb5-11" title="11"><span class="kw">logLoss</span>(y_cat, pred_cat)  <span class="co"># Logloss</span></a>
-<a class="sourceLine" id="cb5-12" title="12"><span class="co">#&gt; [1] 0.2394547</span></a>
-<a class="sourceLine" id="cb5-13" title="13"><span class="kw">deviance_bernoulli</span>(y_cat, pred_cat)  <span class="co"># LogLoss * 2</span></a>
-<a class="sourceLine" id="cb5-14" title="14"><span class="co">#&gt; [1] 0.4789093</span></a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># The data</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>y_cat &lt;-<span class="st"> </span>iris[[<span class="st">&quot;Species&quot;</span>]] <span class="op">==</span><span class="st"> &quot;setosa&quot;</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>fit_cat &lt;-<span class="st"> </span><span class="kw">glm</span>(y_cat <span class="op">~</span><span class="st"> </span>Sepal.Length, <span class="dt">data =</span> iris, <span class="dt">family =</span> <span class="kw">binomial</span>())</span>
+<span id="cb5-4"><a href="#cb5-4"></a>pred_cat &lt;-<span class="st"> </span><span class="kw">predict</span>(fit_cat, <span class="dt">type =</span> <span class="st">&quot;response&quot;</span>)</span>
+<span id="cb5-5"><a href="#cb5-5"></a></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="co"># Performance metrics</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="kw">AUC</span>(y_cat, pred_cat)  <span class="co"># unweighted</span></span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="co">#&gt; [1] 0.9586</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a><span class="kw">AUC</span>(y_cat, pred_cat, <span class="dt">w =</span> weights)  <span class="co"># weighted</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a><span class="co">#&gt; [1] 0.9629734</span></span>
+<span id="cb5-11"><a href="#cb5-11"></a><span class="kw">logLoss</span>(y_cat, pred_cat)  <span class="co"># Logloss</span></span>
+<span id="cb5-12"><a href="#cb5-12"></a><span class="co">#&gt; [1] 0.2394547</span></span>
+<span id="cb5-13"><a href="#cb5-13"></a><span class="kw">deviance_bernoulli</span>(y_cat, pred_cat)  <span class="co"># LogLoss * 2</span></span>
+<span id="cb5-14"><a href="#cb5-14"></a><span class="co">#&gt; [1] 0.4789093</span></span></code></pre></div>
 </div>
 </div>
 <div id="generalized-r-squared" class="section level3">
 <h3>Generalized R-squared</h3>
-<p>Furthermore, we provide a generalization of R-squared, defined as the proportion of deviance explained, i.e. one minus the ratio of residual deviance and intercept-only deviance, see e.g. [2]. By default, it calculates the ordinary R-squared, i.e. proportion of <em>normal</em> deviance (mean-squared error) explained. However, you can specify any different deviance function, e.g. <code>deviance_tweedie</code> with paramter 1.5 or the deviance of the logistic regression (<code>deviance_bernoulli</code>).</p>
+<p>Furthermore, we provide a generalization of R-squared, defined as the proportion of deviance explained, i.e. one minus the ratio of residual deviance and intercept-only deviance, see e.g. [2]. By default, it calculates the ordinary R-squared, i.e. proportion of <em>normal</em> deviance (mean-squared error) explained. However, you can specify any different deviance function, e.g. <code>deviance_tweedie</code> with paramter 1.5 or the deviance of the <em>binary</em> logistic regression (<code>deviance_bernoulli</code>).</p>
 <div id="examples" class="section level4">
 <h4>Examples</h4>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">summary</span>(fit_num)<span class="op">$</span>r.squared</a>
-<a class="sourceLine" id="cb6-2" title="2"><span class="co">#&gt; [1] 0.8673123</span></a>
-<a class="sourceLine" id="cb6-3" title="3"></a>
-<a class="sourceLine" id="cb6-4" title="4"><span class="co"># same</span></a>
-<a class="sourceLine" id="cb6-5" title="5"><span class="kw">r_squared</span>(y_num, pred_num)</a>
-<a class="sourceLine" id="cb6-6" title="6"><span class="co">#&gt; [1] 0.8673123</span></a>
-<a class="sourceLine" id="cb6-7" title="7"><span class="kw">r_squared</span>(y_num, pred_num, <span class="dt">deviance_function =</span> deviance_tweedie, <span class="dt">tweedie_p =</span> <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb6-8" title="8"><span class="co">#&gt; [1] 0.8673123</span></a>
-<a class="sourceLine" id="cb6-9" title="9"></a>
-<a class="sourceLine" id="cb6-10" title="10"><span class="co"># weighted</span></a>
-<a class="sourceLine" id="cb6-11" title="11"><span class="kw">r_squared</span>(y_num, pred_num, <span class="dt">w =</span> weights)</a>
-<a class="sourceLine" id="cb6-12" title="12"><span class="co">#&gt; [1] 0.8300011</span></a>
-<a class="sourceLine" id="cb6-13" title="13"><span class="kw">r_squared</span>(y_num, pred_num, <span class="dt">w =</span> weights, <span class="dt">deviance_function =</span> deviance_gamma) </a>
-<a class="sourceLine" id="cb6-14" title="14"><span class="co">#&gt; [1] 0.8300644</span></a>
-<a class="sourceLine" id="cb6-15" title="15"><span class="kw">r_squared</span>(y_num, pred_num, <span class="dt">w =</span> weights, <span class="dt">deviance_function =</span> deviance_tweedie, <span class="dt">tweedie_p =</span> <span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb6-16" title="16"><span class="co">#&gt; [1] 0.8300644</span></a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">summary</span>(fit_num)<span class="op">$</span>r.squared</span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="co">#&gt; [1] 0.8673123</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="co"># same</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="kw">r_squared</span>(y_num, pred_num)</span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="co">#&gt; [1] 0.8673123</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="kw">r_squared</span>(y_num, pred_num, <span class="dt">deviance_function =</span> deviance_tweedie, <span class="dt">tweedie_p =</span> <span class="dv">0</span>)</span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="co">#&gt; [1] 0.8673123</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a><span class="kw">r_squared</span>(y_num, pred_num, <span class="dt">deviance_function =</span> deviance_tweedie, <span class="dt">tweedie_p =</span> <span class="fl">1.5</span>)</span>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="co">#&gt; [1] 0.8675195</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a></span>
+<span id="cb6-12"><a href="#cb6-12"></a><span class="co"># weighted</span></span>
+<span id="cb6-13"><a href="#cb6-13"></a><span class="kw">r_squared</span>(y_num, pred_num, <span class="dt">w =</span> weights)</span>
+<span id="cb6-14"><a href="#cb6-14"></a><span class="co">#&gt; [1] 0.8300011</span></span>
+<span id="cb6-15"><a href="#cb6-15"></a><span class="kw">r_squared</span>(y_num, pred_num, <span class="dt">w =</span> weights, <span class="dt">deviance_function =</span> deviance_gamma) </span>
+<span id="cb6-16"><a href="#cb6-16"></a><span class="co">#&gt; [1] 0.8300644</span></span>
+<span id="cb6-17"><a href="#cb6-17"></a><span class="kw">r_squared</span>(y_num, pred_num, <span class="dt">w =</span> weights, <span class="dt">deviance_function =</span> deviance_tweedie, <span class="dt">tweedie_p =</span> <span class="dv">2</span>)</span>
+<span id="cb6-18"><a href="#cb6-18"></a><span class="co">#&gt; [1] 0.8300644</span></span>
+<span id="cb6-19"><a href="#cb6-19"></a><span class="kw">r_squared</span>(y_num, pred_num, <span class="dt">deviance_function =</span> deviance_tweedie, <span class="dt">tweedie_p =</span> <span class="fl">1.5</span>)</span>
+<span id="cb6-20"><a href="#cb6-20"></a><span class="co">#&gt; [1] 0.8675195</span></span>
+<span id="cb6-21"><a href="#cb6-21"></a></span>
+<span id="cb6-22"><a href="#cb6-22"></a><span class="co"># respect to own deviance formula</span></span>
+<span id="cb6-23"><a href="#cb6-23"></a>myTweedie &lt;-<span class="st"> </span><span class="cf">function</span>(actual, predicted, <span class="dt">w =</span> <span class="ot">NULL</span>, ...) {</span>
+<span id="cb6-24"><a href="#cb6-24"></a>  <span class="kw">deviance_tweedie</span>(actual, predicted, w, <span class="dt">tweedie_p =</span> <span class="fl">1.5</span>, ...)</span>
+<span id="cb6-25"><a href="#cb6-25"></a>}</span>
+<span id="cb6-26"><a href="#cb6-26"></a><span class="kw">r_squared</span>(y_num, pred_num, <span class="dt">deviance_function =</span> myTweedie)</span>
+<span id="cb6-27"><a href="#cb6-27"></a><span class="co">#&gt; [1] 0.8675195</span></span></code></pre></div>
 </div>
 </div>
 <div id="tidyverse" class="section level3">
@@ -407,90 +448,90 @@ install_github(&quot;mayer79/MetricsWeighted&quot;)</code></pre>
 <p>In order to facilitate the use of these metrics in a <code>dplyr</code> chain, you can try out the function <code>performance</code>: Starting from a data set with actual and predicted values (and optional case weights), it calculates one or more metrics. The resulting values are returned as a <code>data.frame</code>. Stratified performance calculations can e.g. be done by using <code>do</code> from <code>dplyr</code>.</p>
 <div id="examples-1" class="section level4">
 <h4>Examples</h4>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">require</span>(dplyr)</a>
-<a class="sourceLine" id="cb7-2" title="2"></a>
-<a class="sourceLine" id="cb7-3" title="3"><span class="co"># Regression with `Sepal.Length` as response</span></a>
-<a class="sourceLine" id="cb7-4" title="4">iris <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-5" title="5"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pred =</span> <span class="kw">predict</span>(fit_num, <span class="dt">data =</span> .)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-6" title="6"><span class="st">  </span><span class="kw">performance</span>(<span class="st">&quot;Sepal.Length&quot;</span>, <span class="st">&quot;pred&quot;</span>)</a>
-<a class="sourceLine" id="cb7-7" title="7"><span class="co">#&gt;   metric    value</span></a>
-<a class="sourceLine" id="cb7-8" title="8"><span class="co">#&gt; 1   rmse 0.300627</span></a>
-<a class="sourceLine" id="cb7-9" title="9"></a>
-<a class="sourceLine" id="cb7-10" title="10"><span class="co"># Same</span></a>
-<a class="sourceLine" id="cb7-11" title="11">iris <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-12" title="12"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pred =</span> <span class="kw">predict</span>(fit_num, <span class="dt">data =</span> .)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-13" title="13"><span class="st">  </span><span class="kw">performance</span>(<span class="st">&quot;Sepal.Length&quot;</span>, <span class="st">&quot;pred&quot;</span>, <span class="dt">metrics =</span> rmse)</a>
-<a class="sourceLine" id="cb7-14" title="14"><span class="co">#&gt;   metric    value</span></a>
-<a class="sourceLine" id="cb7-15" title="15"><span class="co">#&gt; 1   rmse 0.300627</span></a>
-<a class="sourceLine" id="cb7-16" title="16"></a>
-<a class="sourceLine" id="cb7-17" title="17"><span class="co"># Grouped by Species</span></a>
-<a class="sourceLine" id="cb7-18" title="18">iris <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-19" title="19"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pred =</span> <span class="kw">predict</span>(fit_num, <span class="dt">data =</span> .)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-20" title="20"><span class="st">  </span><span class="kw">group_by</span>(Species) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-21" title="21"><span class="st">  </span><span class="kw">do</span>(<span class="kw">performance</span>(<span class="dt">data =</span> ., <span class="dt">actual =</span> <span class="st">&quot;Sepal.Length&quot;</span>, <span class="dt">predicted =</span> <span class="st">&quot;pred&quot;</span>))</a>
-<a class="sourceLine" id="cb7-22" title="22"><span class="co">#&gt; # A tibble: 3 x 3</span></a>
-<a class="sourceLine" id="cb7-23" title="23"><span class="co">#&gt; # Groups:   Species [3]</span></a>
-<a class="sourceLine" id="cb7-24" title="24"><span class="co">#&gt;   Species    metric value</span></a>
-<a class="sourceLine" id="cb7-25" title="25"><span class="co">#&gt;   &lt;fct&gt;      &lt;fct&gt;  &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb7-26" title="26"><span class="co">#&gt; 1 setosa     rmse   0.254</span></a>
-<a class="sourceLine" id="cb7-27" title="27"><span class="co">#&gt; 2 versicolor rmse   0.329</span></a>
-<a class="sourceLine" id="cb7-28" title="28"><span class="co">#&gt; 3 virginica  rmse   0.313</span></a>
-<a class="sourceLine" id="cb7-29" title="29"></a>
-<a class="sourceLine" id="cb7-30" title="30"><span class="co"># Customized output</span></a>
-<a class="sourceLine" id="cb7-31" title="31">iris <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-32" title="32"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pred =</span> <span class="kw">predict</span>(fit_num, <span class="dt">data =</span> .)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-33" title="33"><span class="st">  </span><span class="kw">performance</span>(<span class="st">&quot;Sepal.Length&quot;</span>, <span class="st">&quot;pred&quot;</span>, <span class="dt">value =</span> <span class="st">&quot;performance&quot;</span>,</a>
-<a class="sourceLine" id="cb7-34" title="34">              <span class="dt">metrics =</span> <span class="kw">list</span>(<span class="st">`</span><span class="dt">root-mean-squared error</span><span class="st">`</span> =<span class="st"> </span>rmse))</a>
-<a class="sourceLine" id="cb7-35" title="35"><span class="co">#&gt;                    metric performance</span></a>
-<a class="sourceLine" id="cb7-36" title="36"><span class="co">#&gt; 1 root-mean-squared error    0.300627</span></a>
-<a class="sourceLine" id="cb7-37" title="37"></a>
-<a class="sourceLine" id="cb7-38" title="38"><span class="co"># Multiple measures</span></a>
-<a class="sourceLine" id="cb7-39" title="39">iris <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-40" title="40"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pred =</span> <span class="kw">predict</span>(fit_num, <span class="dt">data =</span> .)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-41" title="41"><span class="st">  </span><span class="kw">performance</span>(<span class="st">&quot;Sepal.Length&quot;</span>, <span class="st">&quot;pred&quot;</span>,</a>
-<a class="sourceLine" id="cb7-42" title="42">              <span class="dt">metrics =</span> <span class="kw">list</span>(<span class="dt">rmse =</span> rmse, <span class="dt">mae =</span> mae, <span class="st">`</span><span class="dt">R-squared</span><span class="st">`</span> =<span class="st"> </span>r_squared))</a>
-<a class="sourceLine" id="cb7-43" title="43"><span class="co">#&gt;      metric     value</span></a>
-<a class="sourceLine" id="cb7-44" title="44"><span class="co">#&gt; 1      rmse 0.3006270</span></a>
-<a class="sourceLine" id="cb7-45" title="45"><span class="co">#&gt; 2       mae 0.2428628</span></a>
-<a class="sourceLine" id="cb7-46" title="46"><span class="co">#&gt; 3 R-squared 0.8673123</span></a>
-<a class="sourceLine" id="cb7-47" title="47"></a>
-<a class="sourceLine" id="cb7-48" title="48"><span class="co"># Grouped by Species</span></a>
-<a class="sourceLine" id="cb7-49" title="49">iris <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-50" title="50"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pred =</span> <span class="kw">predict</span>(fit_num, <span class="dt">data =</span> .)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-51" title="51"><span class="st">  </span><span class="kw">group_by</span>(Species) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-52" title="52"><span class="st">  </span><span class="kw">do</span>(<span class="kw">performance</span>(., <span class="st">&quot;Sepal.Length&quot;</span>, <span class="st">&quot;pred&quot;</span>,</a>
-<a class="sourceLine" id="cb7-53" title="53">                 <span class="dt">metrics =</span> <span class="kw">list</span>(<span class="dt">rmse =</span> rmse, <span class="dt">mae =</span> mae, <span class="st">`</span><span class="dt">R-squared</span><span class="st">`</span> =<span class="st"> </span>r_squared)))</a>
-<a class="sourceLine" id="cb7-54" title="54"><span class="co">#&gt; # A tibble: 9 x 3</span></a>
-<a class="sourceLine" id="cb7-55" title="55"><span class="co">#&gt; # Groups:   Species [3]</span></a>
-<a class="sourceLine" id="cb7-56" title="56"><span class="co">#&gt;   Species    metric    value</span></a>
-<a class="sourceLine" id="cb7-57" title="57"><span class="co">#&gt;   &lt;fct&gt;      &lt;fct&gt;     &lt;dbl&gt;</span></a>
-<a class="sourceLine" id="cb7-58" title="58"><span class="co">#&gt; 1 setosa     rmse      0.254</span></a>
-<a class="sourceLine" id="cb7-59" title="59"><span class="co">#&gt; 2 setosa     mae       0.201</span></a>
-<a class="sourceLine" id="cb7-60" title="60"><span class="co">#&gt; 3 setosa     R-squared 0.469</span></a>
-<a class="sourceLine" id="cb7-61" title="61"><span class="co">#&gt; 4 versicolor rmse      0.329</span></a>
-<a class="sourceLine" id="cb7-62" title="62"><span class="co">#&gt; 5 versicolor mae       0.276</span></a>
-<a class="sourceLine" id="cb7-63" title="63"><span class="co">#&gt; 6 versicolor R-squared 0.585</span></a>
-<a class="sourceLine" id="cb7-64" title="64"><span class="co">#&gt; 7 virginica  rmse      0.313</span></a>
-<a class="sourceLine" id="cb7-65" title="65"><span class="co">#&gt; 8 virginica  mae       0.252</span></a>
-<a class="sourceLine" id="cb7-66" title="66"><span class="co">#&gt; 9 virginica  R-squared 0.752</span></a>
-<a class="sourceLine" id="cb7-67" title="67"></a>
-<a class="sourceLine" id="cb7-68" title="68"><span class="co"># Passing extra argument (Tweedie p)</span></a>
-<a class="sourceLine" id="cb7-69" title="69">iris <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-70" title="70"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pred =</span> <span class="kw">predict</span>(fit_num, <span class="dt">data =</span> .)) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb7-71" title="71"><span class="st">  </span><span class="kw">performance</span>(<span class="st">&quot;Sepal.Length&quot;</span>, <span class="st">&quot;pred&quot;</span>,</a>
-<a class="sourceLine" id="cb7-72" title="72">              <span class="dt">metrics =</span> <span class="kw">list</span>(<span class="st">`</span><span class="dt">normal deviance</span><span class="st">`</span> =<span class="st"> </span>deviance_normal, </a>
-<a class="sourceLine" id="cb7-73" title="73">                             <span class="st">`</span><span class="dt">Tweedie with p = 0</span><span class="st">`</span> =<span class="st"> </span>deviance_tweedie),</a>
-<a class="sourceLine" id="cb7-74" title="74">              <span class="dt">tweedie_p =</span> <span class="dv">0</span>)</a>
-<a class="sourceLine" id="cb7-75" title="75"><span class="co">#&gt;               metric      value</span></a>
-<a class="sourceLine" id="cb7-76" title="76"><span class="co">#&gt; 1    normal deviance 0.09037657</span></a>
-<a class="sourceLine" id="cb7-77" title="77"><span class="co">#&gt; 2 Tweedie with p = 0 0.09037657</span></a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">require</span>(dplyr)</span>
+<span id="cb7-2"><a href="#cb7-2"></a></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="co"># Regression with `Sepal.Length` as response</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a>iris <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pred =</span> <span class="kw">predict</span>(fit_num, <span class="dt">data =</span> .)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="st">  </span><span class="kw">performance</span>(<span class="st">&quot;Sepal.Length&quot;</span>, <span class="st">&quot;pred&quot;</span>)</span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="co">#&gt;   metric    value</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="co">#&gt; 1   rmse 0.300627</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a></span>
+<span id="cb7-10"><a href="#cb7-10"></a><span class="co"># Same</span></span>
+<span id="cb7-11"><a href="#cb7-11"></a>iris <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb7-12"><a href="#cb7-12"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pred =</span> <span class="kw">predict</span>(fit_num, <span class="dt">data =</span> .)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb7-13"><a href="#cb7-13"></a><span class="st">  </span><span class="kw">performance</span>(<span class="st">&quot;Sepal.Length&quot;</span>, <span class="st">&quot;pred&quot;</span>, <span class="dt">metrics =</span> rmse)</span>
+<span id="cb7-14"><a href="#cb7-14"></a><span class="co">#&gt;   metric    value</span></span>
+<span id="cb7-15"><a href="#cb7-15"></a><span class="co">#&gt; 1   rmse 0.300627</span></span>
+<span id="cb7-16"><a href="#cb7-16"></a></span>
+<span id="cb7-17"><a href="#cb7-17"></a><span class="co"># Grouped by Species</span></span>
+<span id="cb7-18"><a href="#cb7-18"></a>iris <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb7-19"><a href="#cb7-19"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pred =</span> <span class="kw">predict</span>(fit_num, <span class="dt">data =</span> .)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb7-20"><a href="#cb7-20"></a><span class="st">  </span><span class="kw">group_by</span>(Species) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb7-21"><a href="#cb7-21"></a><span class="st">  </span><span class="kw">do</span>(<span class="kw">performance</span>(., <span class="dt">actual =</span> <span class="st">&quot;Sepal.Length&quot;</span>, <span class="dt">predicted =</span> <span class="st">&quot;pred&quot;</span>))</span>
+<span id="cb7-22"><a href="#cb7-22"></a><span class="co">#&gt; # A tibble: 3 x 3</span></span>
+<span id="cb7-23"><a href="#cb7-23"></a><span class="co">#&gt; # Groups:   Species [3]</span></span>
+<span id="cb7-24"><a href="#cb7-24"></a><span class="co">#&gt;   Species    metric value</span></span>
+<span id="cb7-25"><a href="#cb7-25"></a><span class="co">#&gt;   &lt;fct&gt;      &lt;fct&gt;  &lt;dbl&gt;</span></span>
+<span id="cb7-26"><a href="#cb7-26"></a><span class="co">#&gt; 1 setosa     rmse   0.254</span></span>
+<span id="cb7-27"><a href="#cb7-27"></a><span class="co">#&gt; 2 versicolor rmse   0.329</span></span>
+<span id="cb7-28"><a href="#cb7-28"></a><span class="co">#&gt; 3 virginica  rmse   0.313</span></span>
+<span id="cb7-29"><a href="#cb7-29"></a></span>
+<span id="cb7-30"><a href="#cb7-30"></a><span class="co"># Customized output</span></span>
+<span id="cb7-31"><a href="#cb7-31"></a>iris <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb7-32"><a href="#cb7-32"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pred =</span> <span class="kw">predict</span>(fit_num, <span class="dt">data =</span> .)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb7-33"><a href="#cb7-33"></a><span class="st">  </span><span class="kw">performance</span>(<span class="st">&quot;Sepal.Length&quot;</span>, <span class="st">&quot;pred&quot;</span>, <span class="dt">value =</span> <span class="st">&quot;performance&quot;</span>,</span>
+<span id="cb7-34"><a href="#cb7-34"></a>              <span class="dt">metrics =</span> <span class="kw">list</span>(<span class="st">`</span><span class="dt">root-mean-squared error</span><span class="st">`</span> =<span class="st"> </span>rmse))</span>
+<span id="cb7-35"><a href="#cb7-35"></a><span class="co">#&gt;                    metric performance</span></span>
+<span id="cb7-36"><a href="#cb7-36"></a><span class="co">#&gt; 1 root-mean-squared error    0.300627</span></span>
+<span id="cb7-37"><a href="#cb7-37"></a></span>
+<span id="cb7-38"><a href="#cb7-38"></a><span class="co"># Multiple measures</span></span>
+<span id="cb7-39"><a href="#cb7-39"></a>iris <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb7-40"><a href="#cb7-40"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pred =</span> <span class="kw">predict</span>(fit_num, <span class="dt">data =</span> .)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb7-41"><a href="#cb7-41"></a><span class="st">  </span><span class="kw">performance</span>(<span class="st">&quot;Sepal.Length&quot;</span>, <span class="st">&quot;pred&quot;</span>,</span>
+<span id="cb7-42"><a href="#cb7-42"></a>              <span class="dt">metrics =</span> <span class="kw">list</span>(<span class="dt">rmse =</span> rmse, <span class="dt">mae =</span> mae, <span class="st">`</span><span class="dt">R-squared</span><span class="st">`</span> =<span class="st"> </span>r_squared))</span>
+<span id="cb7-43"><a href="#cb7-43"></a><span class="co">#&gt;      metric     value</span></span>
+<span id="cb7-44"><a href="#cb7-44"></a><span class="co">#&gt; 1      rmse 0.3006270</span></span>
+<span id="cb7-45"><a href="#cb7-45"></a><span class="co">#&gt; 2       mae 0.2428628</span></span>
+<span id="cb7-46"><a href="#cb7-46"></a><span class="co">#&gt; 3 R-squared 0.8673123</span></span>
+<span id="cb7-47"><a href="#cb7-47"></a></span>
+<span id="cb7-48"><a href="#cb7-48"></a><span class="co"># Grouped by Species</span></span>
+<span id="cb7-49"><a href="#cb7-49"></a>iris <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb7-50"><a href="#cb7-50"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pred =</span> <span class="kw">predict</span>(fit_num, <span class="dt">data =</span> .)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb7-51"><a href="#cb7-51"></a><span class="st">  </span><span class="kw">group_by</span>(Species) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb7-52"><a href="#cb7-52"></a><span class="st">  </span><span class="kw">do</span>(<span class="kw">performance</span>(., <span class="st">&quot;Sepal.Length&quot;</span>, <span class="st">&quot;pred&quot;</span>,</span>
+<span id="cb7-53"><a href="#cb7-53"></a>                 <span class="dt">metrics =</span> <span class="kw">list</span>(<span class="dt">rmse =</span> rmse, <span class="dt">mae =</span> mae, <span class="st">`</span><span class="dt">R-squared</span><span class="st">`</span> =<span class="st"> </span>r_squared)))</span>
+<span id="cb7-54"><a href="#cb7-54"></a><span class="co">#&gt; # A tibble: 9 x 3</span></span>
+<span id="cb7-55"><a href="#cb7-55"></a><span class="co">#&gt; # Groups:   Species [3]</span></span>
+<span id="cb7-56"><a href="#cb7-56"></a><span class="co">#&gt;   Species    metric    value</span></span>
+<span id="cb7-57"><a href="#cb7-57"></a><span class="co">#&gt;   &lt;fct&gt;      &lt;fct&gt;     &lt;dbl&gt;</span></span>
+<span id="cb7-58"><a href="#cb7-58"></a><span class="co">#&gt; 1 setosa     rmse      0.254</span></span>
+<span id="cb7-59"><a href="#cb7-59"></a><span class="co">#&gt; 2 setosa     mae       0.201</span></span>
+<span id="cb7-60"><a href="#cb7-60"></a><span class="co">#&gt; 3 setosa     R-squared 0.469</span></span>
+<span id="cb7-61"><a href="#cb7-61"></a><span class="co">#&gt; 4 versicolor rmse      0.329</span></span>
+<span id="cb7-62"><a href="#cb7-62"></a><span class="co">#&gt; 5 versicolor mae       0.276</span></span>
+<span id="cb7-63"><a href="#cb7-63"></a><span class="co">#&gt; 6 versicolor R-squared 0.585</span></span>
+<span id="cb7-64"><a href="#cb7-64"></a><span class="co">#&gt; 7 virginica  rmse      0.313</span></span>
+<span id="cb7-65"><a href="#cb7-65"></a><span class="co">#&gt; 8 virginica  mae       0.252</span></span>
+<span id="cb7-66"><a href="#cb7-66"></a><span class="co">#&gt; 9 virginica  R-squared 0.752</span></span>
+<span id="cb7-67"><a href="#cb7-67"></a></span>
+<span id="cb7-68"><a href="#cb7-68"></a><span class="co"># Passing extra argument (Tweedie p)</span></span>
+<span id="cb7-69"><a href="#cb7-69"></a>iris <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb7-70"><a href="#cb7-70"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">pred =</span> <span class="kw">predict</span>(fit_num, <span class="dt">data =</span> .)) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb7-71"><a href="#cb7-71"></a><span class="st">  </span><span class="kw">performance</span>(<span class="st">&quot;Sepal.Length&quot;</span>, <span class="st">&quot;pred&quot;</span>,</span>
+<span id="cb7-72"><a href="#cb7-72"></a>              <span class="dt">metrics =</span> <span class="kw">list</span>(<span class="st">`</span><span class="dt">normal deviance</span><span class="st">`</span> =<span class="st"> </span>deviance_normal, </span>
+<span id="cb7-73"><a href="#cb7-73"></a>                             <span class="st">`</span><span class="dt">Tweedie with p = 0</span><span class="st">`</span> =<span class="st"> </span>deviance_tweedie),</span>
+<span id="cb7-74"><a href="#cb7-74"></a>              <span class="dt">tweedie_p =</span> <span class="dv">0</span>)</span>
+<span id="cb7-75"><a href="#cb7-75"></a><span class="co">#&gt;               metric      value</span></span>
+<span id="cb7-76"><a href="#cb7-76"></a><span class="co">#&gt; 1    normal deviance 0.09037657</span></span>
+<span id="cb7-77"><a href="#cb7-77"></a><span class="co">#&gt; 2 Tweedie with p = 0 0.09037657</span></span></code></pre></div>
 </div>
 </div>
 </div>
 <div id="references" class="section level2">
 <h2>References</h2>
-<p>[1] Ohlsson E. and Johansson B. (2015). Non-Life Insurance Pricing with Generalized Linear Models. Springer Nature EN. ISBN 978-3642107900.</p>
-<p>[2] Cohen, Jacob. et al. (2002). Applied Multiple Regression/Correlation Analysis for the Behavioral Sciences (3rd ed.). Routledge. ISBN 978-0805822236.</p>
+<p>[1] Jorgensen, B. (1997). The Theory of Dispersion Models. Chapman &amp; Hall/CRC. ISBN 978-0412997112.</p>
+<p>[2] Cohen, J. et al. (2002). Applied Multiple Regression/Correlation Analysis for the Behavioral Sciences (3rd ed.). Routledge. ISBN 978-0805822236.</p>
 </div>
 
 

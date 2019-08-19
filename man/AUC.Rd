@@ -9,7 +9,7 @@ AUC(actual, predicted, w = NULL, ...)
 \arguments{
 \item{actual}{Observed values (0 or 1).}
 
-\item{predicted}{Predicted values (not necessarly between 0 and 1).}
+\item{predicted}{Predicted values of any value (not necessarly between 0 and 1).}
 
 \item{w}{Optional case weights.}
 
@@ -19,7 +19,10 @@ AUC(actual, predicted, w = NULL, ...)
 A numeric vector of length one.
 }
 \description{
-Weighted AUC, i.e. the area under the receiver operating curve, based on a deterministic version of \code{glmnet::auc}. Note that the unweighted version can be different from the weighted one with unit weights due to ties in \code{predicted}.
+Function copied from glmnet package (modified to ensure deterministic results). Calculates weighted AUC, i.e. the area under the receiver operating curve. The larger, the better.
+}
+\details{
+The unweighted version can be different from the weighted one with unit weights due to ties in \code{predicted}.
 }
 \examples{
 AUC(c(0, 0, 1, 1), c(0.1, 0.1, 0.9, 0.8))
@@ -29,11 +32,7 @@ AUC(c(1, 0, 0, 1), c(0.1, 0.1, 0.9, 0.8), w = rep(1, 4)) # different from last d
 AUC(c(1, 0, 0, 1), c(0.1, 0.2, 0.9, 0.8))
 AUC(c(1, 0, 0, 1), c(0.1, 0.2, 0.9, 0.8), w = rep(1, 4)) # same as last (no ties)
 AUC(c(0, 0, 1, 1), c(0.1, 0.1, 0.9, 0.8), w = 1:4)
-
 }
 \seealso{
 \code{\link{gini_coefficient}}.
-}
-\author{
-Michael Mayer, \email{mayermichael79@gmail.com}
 }

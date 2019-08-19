@@ -2,7 +2,7 @@
 % Please edit documentation in R/classification_error.R
 \name{classification_error}
 \alias{classification_error}
-\title{Classification error}
+\title{Classification Error}
 \usage{
 classification_error(actual, predicted, w = NULL, ...)
 }
@@ -19,17 +19,13 @@ classification_error(actual, predicted, w = NULL, ...)
 A numeric vector of length one.
 }
 \description{
-Weighted classification error, i.e. the weighted proportion of elements in \code{predicted} that are unequal to those in \code{observed}. Equals 1 - accuracy.
+Calculates weighted classification error, i.e. the weighted proportion of elements in \code{predicted} that are unequal to those in \code{observed}. Equals 1 - accuracy, thus lower values are better.
 }
 \examples{
 classification_error(c(0, 0, 1, 1), c(0, 0, 1, 1))
 classification_error(c(1, 0, 0, 1), c(0, 0, 1, 1))
 classification_error(c(1, 0, 0, 1), c(0, 0, 1, 1), w = 1:4)
-
 }
 \seealso{
 \code{\link{accuracy}}.
-}
-\author{
-Michael Mayer, \email{mayermichael79@gmail.com}
 }

@@ -2,28 +2,29 @@
 % Please edit documentation in R/weighted_mean.R
 \name{weighted_mean}
 \alias{weighted_mean}
-\title{Weighted mean that handles NULL weights}
+\title{Weighted Mean}
 \usage{
 weighted_mean(x, w = NULL, ...)
 }
 \arguments{
 \item{x}{Numeric vector.}
 
-\item{w}{Optional case weights.}
+\item{w}{Optional non-negative case weights.}
 
-\item{...}{Further arguments passed to \code{weighted_mean}.}
+\item{...}{Further arguments passed to \code{mean} or \code{weighted.mean}.}
 }
 \value{
 A length-one numeric vector.
 }
 \description{
-Returns weighted mean of numeric vector.
+Returns weighted mean of a numeric vector. In contrast to \code{stats::weighted.mean}, \code{w} does not need to be specified.
 }
 \examples{
 weighted_mean(1:10)
 weighted_mean(1:10, w = NULL)
 weighted_mean(1:10, w = 1:10)
+# weighted_mean(1, 0) # Raises error
 }
-\author{
-Michael Mayer, \email{mayermichael79@gmail.com}
+\seealso{
+\code{\link{weighted_quantile}}.
 }

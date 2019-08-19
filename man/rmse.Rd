@@ -2,7 +2,7 @@
 % Please edit documentation in R/rmse.R
 \name{rmse}
 \alias{rmse}
-\title{Root-mean-squared error}
+\title{Root-Mean-Squared Error}
 \usage{
 rmse(actual, predicted, w = NULL, ...)
 }
@@ -19,17 +19,13 @@ rmse(actual, predicted, w = NULL, ...)
 A numeric vector of length one.
 }
 \description{
-Weighted root-mean-squared error of predicted values. Equals the square root of mean-squared error.
+Weighted root-mean-squared error of predicted values. Equals the square root of mean-squared error. Smaller values are better.
 }
 \examples{
-rmse(1:10, (1:10)^2)
-rmse(1:10, (1:10)^2, w = rep(1, 10))
-rmse(1:10, (1:10)^2, w = 1:10)
-
+rmse(1:10, c(1:9, 12))
+rmse(1:10, c(1:9, 12), w = rep(1, 10))
+rmse(1:10, c(1:9, 12), w = 1:10)
 }
 \seealso{
 \code{\link{mse}}.
-}
-\author{
-Michael Mayer, \email{mayermichael79@gmail.com}
 }

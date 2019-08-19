@@ -2,7 +2,7 @@
 % Please edit documentation in R/f1_score.R
 \name{f1_score}
 \alias{f1_score}
-\title{F1 score}
+\title{F1 Score}
 \usage{
 f1_score(actual, predicted, w = NULL, ...)
 }
@@ -19,17 +19,13 @@ f1_score(actual, predicted, w = NULL, ...)
 A numeric vector of length one.
 }
 \description{
-Weighted F1 score, the harmonic mean of precision and recall.
+Calculates weighted F1 score or F measure defined as the harmonic mean of precision and recall, see \url{https://en.wikipedia.org/wiki/Precision_and_recall} for some background. The higher, the better.
 }
 \examples{
 f1_score(c(0, 0, 1, 1), c(0, 0, 1, 1))
 f1_score(c(1, 0, 0, 1), c(0, 0, 1, 1))
 f1_score(c(1, 0, 0, 1), c(0, 0, 1, 1), w = 1:4)
-
 }
 \seealso{
 \code{\link{precision}, \link{recall}}.
-}
-\author{
-Michael Mayer, \email{mayermichael79@gmail.com}
 }

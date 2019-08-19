@@ -2,14 +2,14 @@
 % Please edit documentation in R/logLoss.R
 \name{logLoss}
 \alias{logLoss}
-\title{Log Loss/binary cross entropy}
+\title{Log Loss/Binary Cross Entropy}
 \usage{
 logLoss(actual, predicted, w = NULL, ...)
 }
 \arguments{
-\item{actual}{Observed values.}
+\item{actual}{Observed values (0 or 1).}
 
-\item{predicted}{Predicted values.}
+\item{predicted}{Predicted values strictly larger than 0 and smaller than 1.}
 
 \item{w}{Optional case weights.}
 
@@ -19,17 +19,13 @@ logLoss(actual, predicted, w = NULL, ...)
 A numeric vector of length one.
 }
 \description{
-Weighted logloss/cross entropy.
+Calculates weighted logloss resp. cross entropy. Equals half of the unit Bernoulli deviance. The smaller, the better.
 }
 \examples{
 logLoss(c(0, 0, 1, 1), c(0.1, 0.1, 0.9, 0.8))
 logLoss(c(1, 0, 0, 1), c(0.1, 0.1, 0.9, 0.8))
 logLoss(c(0, 0, 1, 1), c(0.1, 0.1, 0.9, 0.8), w = 1:4)
-
 }
 \seealso{
-\code{\link{logLoss}}.
-}
-\author{
-Michael Mayer, \email{mayermichael79@gmail.com}
+\code{\link{deviance_bernoulli}}.
 }

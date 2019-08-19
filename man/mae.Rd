@@ -2,7 +2,7 @@
 % Please edit documentation in R/mae.R
 \name{mae}
 \alias{mae}
-\title{Mean absolute error}
+\title{Mean Absolute Error}
 \usage{
 mae(actual, predicted, w = NULL, ...)
 }
@@ -19,13 +19,10 @@ mae(actual, predicted, w = NULL, ...)
 A numeric vector of length one.
 }
 \description{
-Weighted mean absolute error of predicted values.
+Calculates weighted mean absolute error of predicted values. The smaller the value, the better.
 }
 \examples{
-mae(1:10, (1:10)^2)
-mae(1:10, (1:10)^2, w = rep(1, 10))
-mae(1:10, (1:10)^2, w = 1:10)
-}
-\author{
-Michael Mayer, \email{mayermichael79@gmail.com}
+mae(1:10, c(1:9, 12))
+mae(1:10, c(1:9, 12), w = rep(1, 10))
+mae(1:10, c(1:9, 12), w = 1:10)
 }

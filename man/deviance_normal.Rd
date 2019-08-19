@@ -2,7 +2,7 @@
 % Please edit documentation in R/deviance_normal.R
 \name{deviance_normal}
 \alias{deviance_normal}
-\title{Normal deviance}
+\title{Normal Deviance}
 \usage{
 deviance_normal(actual, predicted, w = NULL, ...)
 }
@@ -13,26 +13,23 @@ deviance_normal(actual, predicted, w = NULL, ...)
 
 \item{w}{Optional case weights.}
 
-\item{...}{Further arguments passed to \code{deviance_tweedie}.}
+\item{...}{Further arguments passed to \code{mse}.}
 }
 \value{
 A numeric vector of length one.
 }
 \description{
-Weighted average of (unscaled) unit normal deviance. This equals the weighted mean-squared error, see e.g. [1].
+Weighted average of (unscaled) unit normal deviance. This equals the weighted mean-squared error, see e.g. [1]. The smaller the deviance, the better.
 }
 \examples{
-deviance_normal(1:10, (1:10)^2)
-deviance_normal(1:10, (1:10)^2, w = rep(1, 10))
-deviance_normal(1:10, (1:10)^2, w = 1:10)
-
+deviance_normal(1:10, c(1:9, 12))
+deviance_normal(1:10, c(1:9, 12), w = rep(1, 10))
+deviance_tweedie(1:10, c(1:9, 12), tweedie_p = 0)
+deviance_normal(1:10, c(1:9, 12), w = 1:10)
 }
 \references{
-[1] Ohlsson E. and Johansson B. (2015). Non-Life Insurance Pricing with Generalized Linear Models. Springer Nature EN. ISBN 978-3642107900.
+[1] Jorgensen, B. (1997). The Theory of Dispersion Models. Chapman & Hall/CRC. ISBN 978-0412997112.
 }
 \seealso{
 \code{\link{deviance_tweedie}, \link{mse}}.
-}
-\author{
-Michael Mayer, \email{mayermichael79@gmail.com}
 }
