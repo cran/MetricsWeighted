@@ -1,6 +1,6 @@
-0cb9d11d4e4fc4af12b8398930b53be8 *DESCRIPTION
-374c86d595a6720232c1874730581293 *NAMESPACE
-dc8439c55eccc4401d5a1f4117f9daba *NEWS.md
+7a44deead05344fb6e4433c780059a96 *DESCRIPTION
+d2b047fa9a54adfaec09610544418c3d *NAMESPACE
+e7e75cc62272342dd8b2e54087daade2 *NEWS.md
 64b193e394baee6127351b5fd4e7e499 *R/AUC.R
 ca13cc56d1d1330ac01d205c212f1ddf *R/accuracy.R
 085353b9c2630706af176b3972036dd7 *R/classification_error.R
@@ -21,14 +21,15 @@ a8b8e26768fd604647f9224da1c8bc5c *R/medae.R
 83ca894bd5978e207e85050ba209937f *R/r_squared.R
 8744c1508e3c588f7f85c59fd3bfb854 *R/recall.R
 33a93d02b3bd8f270c41cd5b91e0a3c3 *R/rmse.R
-3541239778aaf89321d71c2d814ae52f *R/weighted_mean.R
+edf74026f9cc0eb00f744f1750a8b160 *R/weighted_mean.R
 83c228b00b47474ee442fe763497bfd5 *R/weighted_median.R
 074b138c0176e0df2ed7b7b50981675b *R/weighted_quantile.R
+0146e1772a61efc1b3dc8510f1dd50d0 *R/weighted_variance.R
 c2417ba6ad3db2decc9063453c4b9fe4 *README.md
 d739304e494e4d85e5c487920eb51602 *build/vignette.rds
 5ca948648613fedc0fe911dfe30c61a3 *inst/doc/MetricsWeighted.R
 2c5101719c01e454ddb71c952fa3db7b *inst/doc/MetricsWeighted.Rmd
-1c82b193a237ecdd38d4640f6633e8ec *inst/doc/MetricsWeighted.html
+af4b34e2de74a039321305a3bc9320fb *inst/doc/MetricsWeighted.html
 2f7f45023b9e951cac2f6b49a9f371b7 *man/AUC.Rd
 f870870ad97184a0d39135d352e7e06b *man/accuracy.Rd
 d98fd3f2d3ab6c44b06d0bd017f353b2 *man/classification_error.Rd
@@ -49,7 +50,8 @@ be72d52fba0eb8ef8bc6fbe538d5b72d *man/precision.Rd
 4f1d491b05e86247c0b3ad36ae6e5af1 *man/r_squared.Rd
 5b925c668ffbc4dd4ea501055ecf4ed8 *man/recall.Rd
 a2e35d0f0f109a8533909bbc2ec354f2 *man/rmse.Rd
-148c176e5412ccfc3c41c860df6f5caf *man/weighted_mean.Rd
+d77d62ffa7e4cff099a7042befe0d9db *man/weighted_mean.Rd
 3d5880f6ccb3bc70385ee7f0f9662124 *man/weighted_median.Rd
 da570b26f50f4317f2b4ebd430773aec *man/weighted_quantile.Rd
+1a08c4b6374e06d75f519d4967562bc7 *man/weighted_var.Rd
 2c5101719c01e454ddb71c952fa3db7b *vignettes/MetricsWeighted.Rmd
