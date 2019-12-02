@@ -1,4 +1,4 @@
-## ---- include = FALSE----------------------------------------------------
+## ---- include = FALSE---------------------------------------------------------
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -6,10 +6,10 @@ knitr::opts_chunk$set(
   message = FALSE
 )
 
-## ----setup---------------------------------------------------------------
+## ----setup--------------------------------------------------------------------
 library(MetricsWeighted)
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # The data
 y_num <- iris[["Sepal.Length"]]
 fit_num <- lm(Sepal.Length ~ ., data = iris)
@@ -40,7 +40,7 @@ deviance_tweedie(y_num, pred_num, tweedie_p = 1.99)
 deviance_tweedie(y_num, pred_num, tweedie_p = 2.01)
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 # The data
 y_cat <- iris[["Species"]] == "setosa"
 fit_cat <- glm(y_cat ~ Sepal.Length, data = iris, family = binomial())
@@ -53,7 +53,7 @@ logLoss(y_cat, pred_cat)  # Logloss
 deviance_bernoulli(y_cat, pred_cat)  # LogLoss * 2
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 summary(fit_num)$r.squared
 
 # same
@@ -74,7 +74,7 @@ myTweedie <- function(actual, predicted, w = NULL, ...) {
 r_squared(y_num, pred_num, deviance_function = myTweedie)
 
 
-## ------------------------------------------------------------------------
+## -----------------------------------------------------------------------------
 require(dplyr)
 
 # Regression with `Sepal.Length` as response

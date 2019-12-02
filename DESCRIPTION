@@ -2,8 +2,8 @@ Type: Package
 Package: MetricsWeighted
 Title: Weighted Metrics, Scoring Functions and Performance Measures for
         Machine Learning
-Version: 0.3.0
-Date: 2019-11-08
+Version: 0.4.0
+Date: 2019-12-02
 Authors@R: 
     c(person(given = "Michael",
              family = "Mayer",
@@ -28,10 +28,10 @@ Encoding: UTF-8
 LazyData: true
 Imports: stats
 Suggests: dplyr, knitr
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.0
 NeedsCompilation: no
-Packaged: 2019-11-08 15:00:11 UTC; Michael
+Packaged: 2019-12-02 19:59:02 UTC; Michael
 Author: Michael Mayer [aut, cre, cph],
   Christian Lorentzen [rev]
 Repository: CRAN
-Date/Publication: 2019-11-08 18:10:02 UTC
+Date/Publication: 2019-12-02 21:00:02 UTC
