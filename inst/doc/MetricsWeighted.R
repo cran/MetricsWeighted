@@ -121,3 +121,21 @@ iris %>%
               tweedie_p = 0)
 
 
+## -----------------------------------------------------------------------------
+ir <- iris
+ir$pred <- predict(fit_num, data = ir)
+
+# Create multiple Tweedie deviance functions
+multi_Tweedie <- multi_metric(deviance_tweedie, tweedie_p = c(0, seq(1, 3, by = 0.2)))
+perf <- performance(ir, actual = "Sepal.Length", predicted = "pred", 
+                    metrics = multi_Tweedie, key = "Tweedie p", value = "deviance")
+head(perf)
+plot(deviance ~ as.numeric(as.character(`Tweedie p`)), data = perf, type = "s")
+
+# Same for Tweedie-R-squared
+multi_Tweedie_r2 <- multi_metric(r_squared, deviance_function = deviance_tweedie, 
+                                 tweedie_p = c(0, seq(1, 3, by = 0.2)))
+perf <- performance(ir, actual = "Sepal.Length", predicted = "pred", 
+                    metrics = multi_Tweedie_r2, key = "Tweedie p", value = "R-squared")
+plot(`R-squared` ~ as.numeric(as.character(`Tweedie p`)), data = perf, type = "s")
+

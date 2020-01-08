@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -13,7 +12,7 @@
 
 <meta name="author" content="Michael Mayer" />
 
-<meta name="date" content="2019-12-02" />
+<meta name="date" content="2020-01-07" />
 
 <title>MetricsWeighted</title>
 
@@ -306,7 +305,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">MetricsWeighted</h1>
 <h4 class="author">Michael Mayer</h4>
-<h4 class="date">2019-12-02</h4>
+<h4 class="date">2020-01-07</h4>
 
 
 
@@ -333,18 +332,17 @@ install_github(&quot;mayer79/MetricsWeighted&quot;)</code></pre>
 <li><p><code>AUC</code> and <code>gini_coefficient</code>: Area under the receiver operating curve (ROC) and the closely related Gini coefficient. Actual values must be 0 or 1, while predictions can take any value (only their order is relevant). The higher, the better.</p></li>
 <li><p><code>deviance_bernoulli</code> and <code>logLoss</code>: Further metrics relevant for binary targets, namely the average unit deviance of the <em>binary</em> logistic regression model (0-1 response) and logLoss (half that deviance). As with all deviance measures, smaller values are better.</p></li>
 <li><p><code>mse</code>, <code>mae</code>, <code>mape</code>, <code>rmse</code>, and <code>medae</code>: Typical regression metrics (mean-squared error, mean absolute error, mean absolute percentage error, root-mean-squared error, and median absolute error). The lower, the better.</p></li>
-<li><p><code>deviance_tweedie</code>: (Unscaled) average unit Tweedie deviance with parameter <code>tweedie_p</code>, see [1] and (<a href="https://en.wikipedia.org/wiki/Tweedie_distribution" class="uri">https://en.wikipedia.org/wiki/Tweedie_distribution</a>) for a reference of the underlying formula.</p></li>
+<li><p><code>deviance_tweedie</code>: (Unscaled) average unit Tweedie deviance with parameter <code>tweedie_p</code>, see <span class="citation">(Jorgensen <a href="#ref-jorgensen" role="doc-biblioref">1997</a>)</span> and (<a href="https://en.wikipedia.org/wiki/Tweedie_distribution" class="uri">https://en.wikipedia.org/wiki/Tweedie_distribution</a>) for a reference of the underlying formula.</p></li>
 <li><p><code>deviance_normal</code>, <code>deviance_gamma</code>, and <code>deviance_poisson</code>: Special cases of Tweedie. <code>deviance_normal</code> equals mean-squared error.</p></li>
+<li><p><code>elementary_score_quantile</code> and <code>elementary_score_expectile</code>: Consistent scoring functions for quantiles and expectiles, see <span class="citation">(Ehm et al. <a href="#ref-gneiting" role="doc-biblioref">2016</a>)</span>.</p></li>
 </ul>
-<p>They all take four arguments:</p>
+<p>They all take at least four arguments:</p>
 <ol style="list-style-type: decimal">
 <li><p><code>actual</code>: Actual observed values.</p></li>
 <li><p><code>predicted</code>: Predicted values.</p></li>
 <li><p><code>w</code>: Optional vector with case weights.</p></li>
 <li><p><code>...</code>: Further arguments.</p></li>
 </ol>
-<p>Notable exception is <code>deviance_tweedie</code>. It requires the Tweedie power as additional parameter. The value 0 corresponds to the Gaussian/normal deviance, the value 1 to the Poisson deviance and the value 2 to the Gamma deviance, see e.g. [1]. For <span class="math inline">\(0 &lt; p &lt; 1\)</span>, the Tweedie distribution is undefined.</p>
-<p>For fixed actual and predicted values, the Tweedie deviance is continuous with respect to this parameter.</p>
 <div id="examples-regression" class="section level4">
 <h4>Examples: Regression</h4>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># The data</span></span>
@@ -411,7 +409,7 @@ install_github(&quot;mayer79/MetricsWeighted&quot;)</code></pre>
 </div>
 <div id="generalized-r-squared" class="section level3">
 <h3>Generalized R-squared</h3>
-<p>Furthermore, we provide a generalization of R-squared, defined as the proportion of deviance explained, i.e. one minus the ratio of residual deviance and intercept-only deviance, see e.g. [2]. By default, it calculates the ordinary R-squared, i.e. proportion of <em>normal</em> deviance (mean-squared error) explained. However, you can specify any different deviance function, e.g. <code>deviance_tweedie</code> with paramter 1.5 or the deviance of the <em>binary</em> logistic regression (<code>deviance_bernoulli</code>).</p>
+<p>Furthermore, we provide a generalization of R-squared, defined as the proportion of deviance explained, i.e. one minus the ratio of residual deviance and intercept-only deviance, see e.g. <span class="citation">(Cohen <a href="#ref-cohen" role="doc-biblioref">2003</a>)</span>. By default, it calculates the ordinary R-squared, i.e. proportion of <em>normal</em> deviance (mean-squared error) explained. However, you can specify any different deviance function, e.g. <code>deviance_tweedie</code> with paramter 1.5 or the deviance of the <em>binary</em> logistic regression (<code>deviance_bernoulli</code>).</p>
 <div id="examples" class="section level4">
 <h4>Examples</h4>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">summary</span>(fit_num)<span class="op">$</span>r.squared</span>
@@ -527,11 +525,57 @@ install_github(&quot;mayer79/MetricsWeighted&quot;)</code></pre>
 <span id="cb7-77"><a href="#cb7-77"></a><span class="co">#&gt; 2 Tweedie with p = 0 0.09037657</span></span></code></pre></div>
 </div>
 </div>
+<div id="parametrized-scoring-functions" class="section level3">
+<h3>Parametrized scoring functions</h3>
+<p>Some scoring functions depend on a further parameter <span class="math inline">\(p\)</span>, e.g.</p>
+<ul>
+<li><code>tweedie_deviance</code> and <code>r_squared</code> for <code>deviance_function = deviance_tweedie</code>: depends on <code>tweedie_p</code>,</li>
+<li><code>elementary_score_expectile</code>, <code>elementary_score_quantile</code>: depend on <code>theta</code>.</li>
+</ul>
+<p>It might be of key relevance to evaluate such function for varying <span class="math inline">\(p\)</span>. That is where the function <code>multi_metric</code> shines.</p>
+<div id="examples-2" class="section level4">
+<h4>Examples</h4>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>ir &lt;-<span class="st"> </span>iris</span>
+<span id="cb8-2"><a href="#cb8-2"></a>ir<span class="op">$</span>pred &lt;-<span class="st"> </span><span class="kw">predict</span>(fit_num, <span class="dt">data =</span> ir)</span>
+<span id="cb8-3"><a href="#cb8-3"></a></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="co"># Create multiple Tweedie deviance functions</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a>multi_Tweedie &lt;-<span class="st"> </span><span class="kw">multi_metric</span>(deviance_tweedie, <span class="dt">tweedie_p =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dt">by =</span> <span class="fl">0.2</span>)))</span>
+<span id="cb8-6"><a href="#cb8-6"></a>perf &lt;-<span class="st"> </span><span class="kw">performance</span>(ir, <span class="dt">actual =</span> <span class="st">&quot;Sepal.Length&quot;</span>, <span class="dt">predicted =</span> <span class="st">&quot;pred&quot;</span>, </span>
+<span id="cb8-7"><a href="#cb8-7"></a>                    <span class="dt">metrics =</span> multi_Tweedie, <span class="dt">key =</span> <span class="st">&quot;Tweedie p&quot;</span>, <span class="dt">value =</span> <span class="st">&quot;deviance&quot;</span>)</span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="kw">head</span>(perf)</span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="co">#&gt;   Tweedie p    deviance</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="co">#&gt; 1         0 0.090376567</span></span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="co">#&gt; 2         1 0.015315945</span></span>
+<span id="cb8-12"><a href="#cb8-12"></a><span class="co">#&gt; 3       1.2 0.010757362</span></span>
+<span id="cb8-13"><a href="#cb8-13"></a><span class="co">#&gt; 4       1.4 0.007559956</span></span>
+<span id="cb8-14"><a href="#cb8-14"></a><span class="co">#&gt; 5       1.6 0.005316008</span></span>
+<span id="cb8-15"><a href="#cb8-15"></a><span class="co">#&gt; 6       1.8 0.003740296</span></span>
+<span id="cb8-16"><a href="#cb8-16"></a><span class="kw">plot</span>(deviance <span class="op">~</span><span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">as.character</span>(<span class="st">`</span><span class="dt">Tweedie p</span><span class="st">`</span>)), <span class="dt">data =</span> perf, <span class="dt">type =</span> <span class="st">&quot;s&quot;</span>)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="co"># Same for Tweedie-R-squared</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a>multi_Tweedie_r2 &lt;-<span class="st"> </span><span class="kw">multi_metric</span>(r_squared, <span class="dt">deviance_function =</span> deviance_tweedie, </span>
+<span id="cb9-4"><a href="#cb9-4"></a>                                 <span class="dt">tweedie_p =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="kw">seq</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dt">by =</span> <span class="fl">0.2</span>)))</span>
+<span id="cb9-5"><a href="#cb9-5"></a>perf &lt;-<span class="st"> </span><span class="kw">performance</span>(ir, <span class="dt">actual =</span> <span class="st">&quot;Sepal.Length&quot;</span>, <span class="dt">predicted =</span> <span class="st">&quot;pred&quot;</span>, </span>
+<span id="cb9-6"><a href="#cb9-6"></a>                    <span class="dt">metrics =</span> multi_Tweedie_r2, <span class="dt">key =</span> <span class="st">&quot;Tweedie p&quot;</span>, <span class="dt">value =</span> <span class="st">&quot;R-squared&quot;</span>)</span>
+<span id="cb9-7"><a href="#cb9-7"></a><span class="kw">plot</span>(<span class="st">`</span><span class="dt">R-squared</span><span class="st">`</span> <span class="op">~</span><span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">as.character</span>(<span class="st">`</span><span class="dt">Tweedie p</span><span class="st">`</span>)), <span class="dt">data =</span> perf, <span class="dt">type =</span> <span class="st">&quot;s&quot;</span>)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
 </div>
-<div id="references" class="section level2">
+</div>
+</div>
+<div id="references" class="section level2 unnumbered">
 <h2>References</h2>
-<p>[1] Jorgensen, B. (1997). The Theory of Dispersion Models. Chapman &amp; Hall/CRC. ISBN 978-0412997112.</p>
-<p>[2] Cohen, J. et al. (2002). Applied Multiple Regression/Correlation Analysis for the Behavioral Sciences (3rd ed.). Routledge. ISBN 978-0805822236.</p>
+<div id="refs" class="references">
+<div id="ref-cohen">
+<p>Cohen, Cohen, J. 2003. <em>Applied Multiple Regression/Correlation Analysis for the Behavioral Sciences</em>. New York: Routledge. <a href="https://doi.org/10.4324/9780203774441">https://doi.org/10.4324/9780203774441</a>.</p>
+</div>
+<div id="ref-gneiting">
+<p>Ehm, Werner, Tilmann Gneiting, Alexander Jordan, and Fabian Krüger. 2016. “Of Quantiles and Expectiles: Consistent Scoring Functions, Choquet Representations and Forecast Rankings.” <em>Journal of the Royal Statistical Society: Series B (Statistical Methodology)</em> 78 (3): 505–62. <a href="https://doi.org/10.1111/rssb.12154">https://doi.org/10.1111/rssb.12154</a>.</p>
+</div>
+<div id="ref-jorgensen">
+<p>Jorgensen, B. 1997. <em>The Theory of Dispersion Models</em>. Chapman &amp; Hall/Crc Monographs on Statistics &amp; Applied Probability. Taylor &amp; Francis.</p>
+</div>
+</div>
 </div>
 
 

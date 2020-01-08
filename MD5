@@ -1,6 +1,6 @@
-8dc4e4550d9280b548a06bcfd51e1ceb *DESCRIPTION
-8d5fd0069dbb45befdfe707f7082bde0 *NAMESPACE
-156226af7dbd267793b45a6125bae163 *NEWS.md
+98da5881c75663f8ea71a1aff31bf5a9 *DESCRIPTION
+7a9c87f60ef674a0c61e788abecafb48 *NAMESPACE
+ac66d2060d76909c4743495a2f5128fe *NEWS.md
 64b193e394baee6127351b5fd4e7e499 *R/AUC.R
 ca13cc56d1d1330ac01d205c212f1ddf *R/accuracy.R
 085353b9c2630706af176b3972036dd7 *R/classification_error.R
@@ -9,6 +9,7 @@ f17e5a673ca80f8b79bf96ab9d4468b8 *R/deviance_gamma.R
 2474a536ff5a0236f40d0dd81fc69f22 *R/deviance_normal.R
 b27039f9745afa2aecd2fff71ffd3157 *R/deviance_poisson.R
 15f4d9aae1d0cc3c6701885911a0fc73 *R/deviance_tweedie.R
+5c1ffb3f3a73c67d29f12c9db41a56cb *R/elementary_score.R
 48a851e5b2ac53bf6459e8f14c345f64 *R/f1_score.R
 be80bf12e2cb82fee526d5951d95077d *R/gini_coefficient.R
 5ce6bfbab1fca874a95326d393155061 *R/logLoss.R
@@ -16,6 +17,7 @@ ebb5f724f0624741fb783308ebcea745 *R/mae.R
 4a051fdffd211f03ea116c5b40f49ee5 *R/mape.R
 a8b8e26768fd604647f9224da1c8bc5c *R/medae.R
 45c92dc8655ad50f93148dbc8110ec37 *R/mse.R
+2a8632f9a18af61efbf1210e21a399f2 *R/multi_metric.R
 33ad1874debebc2b0545ea2bda7b8ab1 *R/performance.R
 09dfb1888ebd144ab0a485bfdd746d2d *R/precision.R
 83ca894bd5978e207e85050ba209937f *R/r_squared.R
@@ -29,10 +31,10 @@ edf74026f9cc0eb00f744f1750a8b160 *R/weighted_mean.R
 074b138c0176e0df2ed7b7b50981675b *R/weighted_quantile.R
 0146e1772a61efc1b3dc8510f1dd50d0 *R/weighted_variance.R
 f653fc0ae27ade2585eed8a6afad64c1 *README.md
-d739304e494e4d85e5c487920eb51602 *build/vignette.rds
-f4966a8bd920ffb6303535bb91d8e158 *inst/doc/MetricsWeighted.R
-2c5101719c01e454ddb71c952fa3db7b *inst/doc/MetricsWeighted.Rmd
-05ea85e08dae14050ea29d6b17256b5c *inst/doc/MetricsWeighted.html
+1cdd6bd2ebcb5b8b5a4257bf908f8bdc *build/vignette.rds
+3c3cee0c376c9b34d05baacd1c4d5b49 *inst/doc/MetricsWeighted.R
+a46f939808065d6e445e913981972c2f *inst/doc/MetricsWeighted.Rmd
+0a2e024196ff6305001eb39a8ff69013 *inst/doc/MetricsWeighted.html
 987708338c6e987f0b3c64ca4e7ffac0 *man/AUC.Rd
 c6f9c143b47f0ce9520c7395329c742e *man/accuracy.Rd
 4bd055b3543e725d9c76a161a0fce29f *man/classification_error.Rd
@@ -41,6 +43,7 @@ c6f9c143b47f0ce9520c7395329c742e *man/accuracy.Rd
 ba04701224ee3549c947e2598ec980a2 *man/deviance_normal.Rd
 df5f5100f785a7f2e8b15f5c43d0f082 *man/deviance_poisson.Rd
 0aba6f5ff1dc67d75817707c91cb7e46 *man/deviance_tweedie.Rd
+4f7f2bbb0e60775cc4433c7146f660e1 *man/elementary_score.Rd
 b793d74b18763140845d2cd8742a8063 *man/f1_score.Rd
 3352e758564a27f597e4002caa425c84 *man/gini_coefficient.Rd
 cbe8b2554d1a89f62fa86413490e1976 *man/logLoss.Rd
@@ -48,7 +51,8 @@ cbe8b2554d1a89f62fa86413490e1976 *man/logLoss.Rd
 627e2a774e0921ede8325ea446dffda1 *man/mape.Rd
 070da0634152c9b820a11e6f934245c8 *man/medae.Rd
 13c82015d08d59d1decca89b63f1f8e5 *man/mse.Rd
-24226eb1f41eeaf4513118cecb5b8bcc *man/performance.Rd
+ed03125e5fb38280123b7ff514a41396 *man/multi_metric.Rd
+6ad70689f1cbe89be21de4400bf7225c *man/performance.Rd
 cc3183b78eac57ffc06a6efdd4b6f7d4 *man/precision.Rd
 c3dd5888f4eb0b503473c02300f80201 *man/r_squared.Rd
 84daf3340b35da560cfc8bfe08f3e5a5 *man/r_squared_bernoulli.Rd
@@ -56,8 +60,9 @@ c3dd5888f4eb0b503473c02300f80201 *man/r_squared.Rd
 3a2d1c666e76bf84de0a3c1b6901b692 *man/r_squared_poisson.Rd
 3b9f752260cf921ead5223f55cc880a7 *man/recall.Rd
 b4aec0c7f883cd7d32558e7238df39d1 *man/rmse.Rd
-ee7f0285ad477fc985c1f574e496db73 *man/weighted_mean.Rd
+a55c81ccb04b1eb5f7efd58981afcd30 *man/weighted_mean.Rd
 e835babfb58a1758c21e43d3f7d5601c *man/weighted_median.Rd
 64076733dfbe6aeb90e749948e5fb75e *man/weighted_quantile.Rd
 d847044894ef7bf471e0e8493ea74e20 *man/weighted_var.Rd
-2c5101719c01e454ddb71c952fa3db7b *vignettes/MetricsWeighted.Rmd
+a46f939808065d6e445e913981972c2f *vignettes/MetricsWeighted.Rmd
+ea52a633755166a4336f4c56ef8aa4e1 *vignettes/biblio.bib
