@@ -2,8 +2,8 @@ Type: Package
 Package: MetricsWeighted
 Title: Weighted Metrics, Scoring Functions and Performance Measures for
         Machine Learning
-Version: 0.5.2
-Date: 2021-04-16
+Version: 0.5.3
+Date: 2021-06-06
 Authors@R: 
     c(person(given = "Michael",
              family = "Mayer",
@@ -28,11 +28,11 @@ Depends: R (>= 3.1.0)
 VignetteBuilder: knitr
 Encoding: UTF-8
 RoxygenNote: 7.1.1
-Imports: stats
-Suggests: knitr, dplyr, graphics, rmarkdown
+Imports: stats, graphics
+Suggests: knitr, dplyr, rmarkdown, testthat
 NeedsCompilation: no
-Packaged: 2021-04-16 17:42:46 UTC; Michael
+Packaged: 2021-06-06 17:37:20 UTC; Michael
 Author: Michael Mayer [aut, cre, cph],
   Christian Lorentzen [ctb, rev]
 Repository: CRAN
-Date/Publication: 2021-04-16 18:20:03 UTC
+Date/Publication: 2021-06-06 18:00:02 UTC
