@@ -1,6 +1,6 @@
-222443b07aa386d9e52e56b6aa73e9a5 *DESCRIPTION
+070f7d97b14b62e6cffd211049de0a8a *DESCRIPTION
 aa727f38368bff1e3241a4b3faec8a83 *NAMESPACE
-aa83387c489ba3c57f1ef75814b73812 *NEWS.md
+c4b886959523014839f173c9de8a131b *NEWS.md
 04ff8053a6f7111fb3f16cc894b891ae *R/AUC.R
 d14fe09f088e05d821ec4e950543e66c *R/accuracy.R
 5fba4c6f8c68defbe3e26aa0c0eaaf2e *R/classification_error.R
@@ -33,11 +33,11 @@ edf74026f9cc0eb00f744f1750a8b160 *R/weighted_mean.R
 83c228b00b47474ee442fe763497bfd5 *R/weighted_median.R
 074b138c0176e0df2ed7b7b50981675b *R/weighted_quantile.R
 9413723e8d750e67438ba8fb78df5e0f *R/weighted_variance.R
-33fe905c966698b7230f90cce77047a1 *README.md
-fc3a8b8ffc72e3dcfce2830d1f461155 *build/vignette.rds
-5729e4a794f724c9371b10ed1fce8d44 *inst/doc/MetricsWeighted.R
-c1427f2bfa22000c170d8f8b05ab5009 *inst/doc/MetricsWeighted.Rmd
-35239134316d2a23ae79228757b60e34 *inst/doc/MetricsWeighted.html
+be9c08fc70045a172b2a8292bd6687ed *README.md
+0bf6162a4c4a494c0b8d23922e4ec4dc *build/vignette.rds
+3e3d7b4b5c82a7d393f1f95d6a34097d *inst/doc/MetricsWeighted.R
+4762b93d789ecc1e05aeaac07e9cc3e8 *inst/doc/MetricsWeighted.Rmd
+2815e16b3f6d93c1e4f1e5618ea52f6f *inst/doc/MetricsWeighted.html
 dcf9aa2631f8dc548fd4599117d8612b *man/AUC.Rd
 7b3ba2dcecd8aa3ba2e823d0752d26a1 *man/accuracy.Rd
 7902c061ff37309597f8256620244521 *man/classification_error.Rd
@@ -48,6 +48,7 @@ fa811611a5903e4a74fa112da2b42ef6 *man/deviance_poisson.Rd
 6695f9da596dc46d14a83de8b59c0480 *man/deviance_tweedie.Rd
 f4ce46125a284330deeb57ba34e7ba71 *man/elementary_score.Rd
 e0c7de32efa8e35509014a8db6185c35 *man/f1_score.Rd
+b9811ead246ee8cf08acb73773c0f483 *man/figures/logo.png
 a9f2760c8ff60522773f27db04e0728f *man/gini_coefficient.Rd
 cfc57d253ee9dcaf280840ea5ef47b5c *man/logLoss.Rd
 2bcbffcf1c1bbcbeb3a7d9a8d43223c2 *man/mae.Rd
@@ -80,10 +81,11 @@ a8cd3544d35426ecf3ca8d4825885e2f *tests/testthat/test-mae.R
 36ea85771a78acc733116614ed26942b *tests/testthat/test-medae.R
 64ee9bdfd91306248df52743226a5f8a *tests/testthat/test-mse.R
 3bd8ecd654cb1c9375de9bed2d59f3ca *tests/testthat/test-performance-multimetric.R
+333ef7cb5bb4833e81ede231b348001b *tests/testthat/test-plots.R
 e44033eb5156748f3c7660ad2d5a4e54 *tests/testthat/test-precision-recall-f1.R
 d7426ada6ec385e72b003187ca9a3d01 *tests/testthat/test-probabilities.R
 2e4c3a5c4fc736f11fe985346b3e1b04 *tests/testthat/test-prop-within.R
 1b27da6b79ab4abae051acd049746b08 *tests/testthat/test-rsquared.R
-524ec596bb05658a9c855d39870b8605 *tests/testthat/test-stats.R
-c1427f2bfa22000c170d8f8b05ab5009 *vignettes/MetricsWeighted.Rmd
+9606e3ee03536c59c7c53241f5c5eb21 *tests/testthat/test-stats.R
+4762b93d789ecc1e05aeaac07e9cc3e8 *vignettes/MetricsWeighted.Rmd
 ea52a633755166a4336f4c56ef8aa4e1 *vignettes/biblio.bib
