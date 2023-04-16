@@ -1,3 +1,12 @@
+# MetricsWeighted 1.0.0
+
+This release bumps the package to stable version 1.0.0.
+
+## Maintenance
+
+- Reorganization of code
+- Switch to `package::function()` notation
+
 # MetricsWeighted 0.5.5
 
 ## Maintenance

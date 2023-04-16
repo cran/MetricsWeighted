@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2023-03-24" />
+<meta name="date" content="2023-04-16" />
 
 <title>MetricsWeighted</title>
 
@@ -360,7 +360,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">MetricsWeighted</h1>
-<h4 class="date">2023-03-24</h4>
+<h4 class="date">2023-04-16</h4>
 
 
 
@@ -368,29 +368,29 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="overview" class="section level2">
 <h2>Overview</h2>
 <p>{MetricsWeighted} provides weighted versions of different machine
-learning metrics, scoring functions and performance measures as well as
-tools to use it within a {dplyr} chain.</p>
+learning metrics and performance measures.</p>
 </div>
-<div id="installation" class="section level1">
-<h1>Installation</h1>
+<div id="installation" class="section level2">
+<h2>Installation</h2>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># From CRAN</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;MetricsWeighted&quot;</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Development version</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;mayer79/MetricsWeighted&quot;</span>)</span></code></pre></div>
+</div>
 <div id="usage" class="section level2">
 <h2>Usage</h2>
-<div id="metrics-scoring-functions-and-performance-measures" class="section level3">
-<h3>Metrics, Scoring Functions and Performance Measures</h3>
-<p>Currently, the following metrics, scoring functions and performance
-measures are available:</p>
+<div id="metrics-and-performance-measures" class="section level3">
+<h3>Metrics and Performance Measures</h3>
+<p>Currently, the following metrics and performance measures are
+available:</p>
 <ul>
 <li><p><code>accuracy()</code>, <code>recall()</code>,
 <code>precision()</code>, <code>f1_score()</code>, and
 <code>classification_error()</code>: Typical binary performance measures
-derived from the confusion matrix, see e.g. (<a href="https://en.wikipedia.org/wiki/Precision_and_recall" class="uri">https://en.wikipedia.org/wiki/Precision_and_recall</a>).
-Require binary predictions. Except for classification error, high values
-are better.</p></li>
+derived from the confusion matrix, see (<a href="https://en.wikipedia.org/wiki/Precision_and_recall" class="uri">https://en.wikipedia.org/wiki/Precision_and_recall</a>).
+Require binary predictions. Except for classification error, higher
+values are better.</p></li>
 <li><p><code>AUC()</code> and <code>gini_coefficient()</code>: Area
 under the receiver operating curve (ROC) and the closely related Gini
 coefficient. Actual values must be 0 or 1, while predictions can take
@@ -399,8 +399,8 @@ better.</p></li>
 <li><p><code>deviance_bernoulli()</code> and <code>logLoss()</code>:
 Further metrics relevant for binary targets, namely the average unit
 deviance of the <em>binary</em> logistic regression model (0-1 response)
-and logLoss (half that deviance). As with all deviance measures, smaller
-values are better.</p></li>
+and log loss (half that deviance). As with all deviance measures,
+smaller values are better.</p></li>
 <li><p><code>mse()</code>, <code>mae()</code>, <code>mape()</code>,
 <code>rmse()</code>, and <code>medae()</code>: Typical regression
 metrics (mean-squared error, mean absolute error, mean absolute
@@ -435,11 +435,11 @@ a given band around the true values.</p></li>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>weights <span class="ot">&lt;-</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(iris))</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Performance metrics</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">mae</span>(y_num, pred_num)  <span class="co"># unweighted</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="fu">mae</span>(y_num, pred_num)                             <span class="co"># unweighted</span></span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.2428628</span></span>
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="fu">mae</span>(y_num, pred_num, <span class="at">w =</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">length</span>(y_num)))  <span class="co"># same</span></span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.2428628</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">mae</span>(y_num, pred_num, <span class="at">w =</span> weights)  <span class="co"># different</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">mae</span>(y_num, pred_num, <span class="at">w =</span> weights)                <span class="co"># different</span></span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.2561237</span></span>
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="fu">rmse</span>(y_num, pred_num)</span>
 <span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.300627</span></span>
@@ -480,13 +480,13 @@ a given band around the true values.</p></li>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>pred_cat <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit_cat, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>)</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Performance metrics</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">AUC</span>(y_cat, pred_cat)  <span class="co"># unweighted</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">AUC</span>(y_cat, pred_cat)                 <span class="co"># unweighted</span></span>
 <span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.9586</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">AUC</span>(y_cat, pred_cat, <span class="at">w =</span> weights)  <span class="co"># weighted</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="fu">AUC</span>(y_cat, pred_cat, <span class="at">w =</span> weights)    <span class="co"># weighted</span></span>
 <span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.9629734</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="fu">logLoss</span>(y_cat, pred_cat)  <span class="co"># Logloss</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="fu">logLoss</span>(y_cat, pred_cat)             <span class="co"># Log loss</span></span>
 <span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.2394547</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">deviance_bernoulli</span>(y_cat, pred_cat)  <span class="co"># LogLoss * 2</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="fu">deviance_bernoulli</span>(y_cat, pred_cat)  <span class="co"># Log Loss * 2</span></span>
 <span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.4789093</span></span></code></pre></div>
 </div>
 </div>
@@ -494,13 +494,7 @@ a given band around the true values.</p></li>
 <h3>Generalized R-squared</h3>
 <p>Furthermore, we provide a generalization of R-squared, defined as the
 proportion of deviance explained, i.e., one minus the ratio of residual
-deviance and intercept-only deviance, see e.g. <span class="citation">(<a href="#ref-cohen" role="doc-biblioref">Cohen
-2003</a>)</span>. By default, it calculates the ordinary R-squared,
-i.e. proportion of <em>normal</em> deviance (mean-squared error)
-explained. However, you can specify any different deviance function,
-e.g. <code>deviance_tweedie()</code> with paramter 1.5 or the deviance
-of the <em>binary</em> logistic regression
-(<code>deviance_bernoulli()</code>).</p>
+deviance and intercept-only deviance, see <span class="citation">(<a href="#ref-cohen" role="doc-biblioref">Cohen 2003</a>)</span>.</p>
 <p><em>For out-of-sample calculations, the null deviance is ideally
 calculated from the average in the training data. This can be controlled
 by setting <code>reference_mean</code> to the (possibly weighted)
@@ -510,7 +504,7 @@ average in the training data.</em></p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_num)<span class="sc">$</span>r.squared</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.8673123</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># same</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Same</span></span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">r_squared</span>(y_num, pred_num)</span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.8673123</span></span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="fu">r_squared</span>(y_num, pred_num, <span class="at">deviance_function =</span> deviance_tweedie, <span class="at">tweedie_p =</span> <span class="dv">0</span>)</span>
@@ -518,7 +512,7 @@ average in the training data.</em></p>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">r_squared</span>(y_num, pred_num, <span class="at">deviance_function =</span> deviance_tweedie, <span class="at">tweedie_p =</span> <span class="fl">1.5</span>)</span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.8675195</span></span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># weighted</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Weighted</span></span>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="fu">r_squared</span>(y_num, pred_num, <span class="at">w =</span> weights)</span>
 <span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.8300011</span></span>
 <span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="fu">r_squared</span>(y_num, pred_num, <span class="at">w =</span> weights, <span class="at">deviance_function =</span> deviance_gamma) </span>
@@ -530,7 +524,7 @@ average in the training data.</em></p>
 <span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a><span class="fu">r_squared</span>(y_num, pred_num, <span class="at">deviance_function =</span> deviance_tweedie, <span class="at">tweedie_p =</span> <span class="fl">1.5</span>)</span>
 <span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.8675195</span></span>
 <span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co"># respect to &#39;own&#39; deviance formula</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="co"># With respect to &#39;own&#39; deviance formula</span></span>
 <span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>myTweedie <span class="ot">&lt;-</span> <span class="cf">function</span>(actual, predicted, <span class="at">w =</span> <span class="cn">NULL</span>, ...) {</span>
 <span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">deviance_tweedie</span>(actual, predicted, w, <span class="at">tweedie_p =</span> <span class="fl">1.5</span>, ...)</span>
 <span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>}</span>
@@ -538,13 +532,13 @@ average in the training data.</em></p>
 <span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.8675195</span></span></code></pre></div>
 </div>
 </div>
-<div id="tidyverse" class="section level3">
-<h3>Tidyverse</h3>
+<div id="pipe" class="section level3">
+<h3>Pipe</h3>
 <p>In order to facilitate the use of these metrics in a {dplyr} chain,
-you can try out the function <code>performance()</code>: Starting from a
-data set with actual and predicted values (and optional case weights),
-it calculates one or more metrics. The resulting values are returned as
-a <code>data.frame</code>.</p>
+use the function <code>performance()</code>: Starting from a data set
+with actual and predicted values (and optional case weights), it
+calculates one or more metrics. The resulting values are returned as a
+<code>data.frame</code>.</p>
 <div id="examples-1" class="section level4">
 <h4>Examples</h4>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
@@ -614,7 +608,7 @@ a <code>data.frame</code>.</p>
 </div>
 <div id="parametrized-scoring-functions" class="section level3">
 <h3>Parametrized scoring functions</h3>
-<p>Some scoring functions depend on a further parameter <span class="math inline">\(p\)</span>, e.g.</p>
+<p>Some scoring functions depend on a further parameter <span class="math inline">\(p\)</span>:</p>
 <ul>
 <li><code>tweedie_deviance()</code>: depends on
 <code>tweedie_p</code>,</li>
@@ -708,7 +702,6 @@ the Royal Statistical Society: Series B (Statistical Methodology)</em>
 Jorgensen, B. 1997. <em>The Theory of Dispersion Models</em>. Chapman
 &amp; Hall/CRC Monographs on Statistics &amp; Applied Probability.
 Taylor &amp; Francis.
-</div>
 </div>
 </div>
 </div>

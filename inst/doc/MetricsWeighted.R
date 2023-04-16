@@ -19,9 +19,9 @@ pred_num <- fit_num$fitted
 weights <- seq_len(nrow(iris))
 
 # Performance metrics
-mae(y_num, pred_num)  # unweighted
+mae(y_num, pred_num)                             # unweighted
 mae(y_num, pred_num, w = rep(1, length(y_num)))  # same
-mae(y_num, pred_num, w = weights)  # different
+mae(y_num, pred_num, w = weights)                # different
 rmse(y_num, pred_num)
 medae(y_num, pred_num, w = weights) # median absolute error
 
@@ -48,20 +48,20 @@ fit_cat <- glm(y_cat ~ Sepal.Length, data = iris, family = binomial())
 pred_cat <- predict(fit_cat, type = "response")
 
 # Performance metrics
-AUC(y_cat, pred_cat)  # unweighted
-AUC(y_cat, pred_cat, w = weights)  # weighted
-logLoss(y_cat, pred_cat)  # Logloss
-deviance_bernoulli(y_cat, pred_cat)  # LogLoss * 2
+AUC(y_cat, pred_cat)                 # unweighted
+AUC(y_cat, pred_cat, w = weights)    # weighted
+logLoss(y_cat, pred_cat)             # Log loss
+deviance_bernoulli(y_cat, pred_cat)  # Log Loss * 2
 
 ## -----------------------------------------------------------------------------
 summary(fit_num)$r.squared
 
-# same
+# Same
 r_squared(y_num, pred_num)
 r_squared(y_num, pred_num, deviance_function = deviance_tweedie, tweedie_p = 0)
 r_squared(y_num, pred_num, deviance_function = deviance_tweedie, tweedie_p = 1.5)
 
-# weighted
+# Weighted
 r_squared(y_num, pred_num, w = weights)
 r_squared(y_num, pred_num, w = weights, deviance_function = deviance_gamma) 
 r_squared(
@@ -69,7 +69,7 @@ r_squared(
 )
 r_squared(y_num, pred_num, deviance_function = deviance_tweedie, tweedie_p = 1.5)
 
-# respect to 'own' deviance formula
+# With respect to 'own' deviance formula
 myTweedie <- function(actual, predicted, w = NULL, ...) {
   deviance_tweedie(actual, predicted, w, tweedie_p = 1.5, ...)
 }
