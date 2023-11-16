@@ -11,7 +11,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 
 
-<meta name="date" content="2023-06-05" />
+<meta name="date" content="2023-11-16" />
 
 <title>MetricsWeighted</title>
 
@@ -360,7 +360,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 
 <h1 class="title toc-ignore">MetricsWeighted</h1>
-<h4 class="date">2023-06-05</h4>
+<h4 class="date">2023-11-16</h4>
 
 
 
@@ -378,90 +378,90 @@ learning metrics and performance measures.</p>
 </div>
 <div id="installation" class="section level2">
 <h2>Installation</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># From CRAN</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;MetricsWeighted&quot;</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Development version</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;mayer79/MetricsWeighted&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># From CRAN</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">&quot;MetricsWeighted&quot;</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co"># Development version</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>devtools<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;mayer79/MetricsWeighted&quot;</span>)</span></code></pre></div>
 </div>
 <div id="usage" class="section level2">
 <h2>Usage</h2>
 <div id="regression" class="section level3">
 <h3>Regression</h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MetricsWeighted)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># The data</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>y_num <span class="ot">&lt;-</span> iris[[<span class="st">&quot;Sepal.Length&quot;</span>]]</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>fit_num <span class="ot">&lt;-</span> <span class="fu">lm</span>(Sepal.Length <span class="sc">~</span> ., <span class="at">data =</span> iris)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>pred_num <span class="ot">&lt;-</span> fit_num<span class="sc">$</span>fitted</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>weights <span class="ot">&lt;-</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(iris))</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Performance metrics</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">rmse</span>(y_num, pred_num)</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.300627</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">rmse</span>(y_num, pred_num, <span class="at">w =</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">length</span>(y_num)))  <span class="co"># same</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.300627</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">rmse</span>(y_num, pred_num, <span class="at">w =</span> weights)                <span class="co"># different</span></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.3138009</span></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="fu">mae</span>(y_num, pred_num)</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.2428628</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="fu">medae</span>(y_num, pred_num, <span class="at">w =</span> weights)</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.2381186</span></span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co"># MSE = mean normal deviance = mean Tweedie deviance with p = 0</span></span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="fu">mse</span>(y_num, pred_num)</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.09037657</span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="fu">deviance_normal</span>(y_num, pred_num)</span>
-<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.09037657</span></span>
-<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="fu">deviance_tweedie</span>(y_num, pred_num, <span class="at">tweedie_p =</span> <span class="dv">0</span>)</span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.09037657</span></span>
-<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Mean Poisson deviance equals mean Tweedie deviance with parameter 1</span></span>
-<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="fu">deviance_poisson</span>(y_num, pred_num)</span>
-<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.01531595</span></span>
-<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="fu">deviance_tweedie</span>(y_num, pred_num, <span class="at">tweedie_p =</span> <span class="dv">1</span>)</span>
-<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.01531595</span></span>
-<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Mean Gamma deviance equals mean Tweedie deviance with parameter 2</span></span>
-<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="fu">deviance_gamma</span>(y_num, pred_num)</span>
-<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.002633186</span></span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="fu">deviance_tweedie</span>(y_num, pred_num, <span class="at">tweedie_p =</span> <span class="dv">2</span>)</span>
-<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.002633186</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">library</span>(MetricsWeighted)</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="co"># The data</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>y_num <span class="ot">&lt;-</span> iris[[<span class="st">&quot;Sepal.Length&quot;</span>]]</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>fit_num <span class="ot">&lt;-</span> <span class="fu">lm</span>(Sepal.Length <span class="sc">~</span> ., <span class="at">data =</span> iris)</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>pred_num <span class="ot">&lt;-</span> fit_num<span class="sc">$</span>fitted</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>weights <span class="ot">&lt;-</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(iris))</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="co"># Performance metrics</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a><span class="fu">rmse</span>(y_num, pred_num)</span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co">#&gt; [1] 0.300627</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="fu">rmse</span>(y_num, pred_num, <span class="at">w =</span> <span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">length</span>(y_num)))  <span class="co"># same</span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="co">#&gt; [1] 0.300627</span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="fu">rmse</span>(y_num, pred_num, <span class="at">w =</span> weights)                <span class="co"># different</span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="co">#&gt; [1] 0.3138009</span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a><span class="fu">mae</span>(y_num, pred_num)</span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="co">#&gt; [1] 0.2428628</span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="fu">medae</span>(y_num, pred_num, <span class="at">w =</span> weights)</span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a><span class="co">#&gt; [1] 0.2381186</span></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="co"># MSE = mean normal deviance = mean Tweedie deviance with p = 0</span></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a><span class="fu">mse</span>(y_num, pred_num)</span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a><span class="co">#&gt; [1] 0.09037657</span></span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a><span class="fu">deviance_normal</span>(y_num, pred_num)</span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a><span class="co">#&gt; [1] 0.09037657</span></span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a><span class="fu">deviance_tweedie</span>(y_num, pred_num, <span class="at">tweedie_p =</span> <span class="dv">0</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a><span class="co">#&gt; [1] 0.09037657</span></span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a><span class="co"># Mean Poisson deviance equals mean Tweedie deviance with parameter 1</span></span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a><span class="fu">deviance_poisson</span>(y_num, pred_num)</span>
+<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a><span class="co">#&gt; [1] 0.01531595</span></span>
+<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a><span class="fu">deviance_tweedie</span>(y_num, pred_num, <span class="at">tweedie_p =</span> <span class="dv">1</span>)</span>
+<span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a><span class="co">#&gt; [1] 0.01531595</span></span>
+<span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a></span>
+<span id="cb2-35"><a href="#cb2-35" tabindex="-1"></a><span class="co"># Mean Gamma deviance equals mean Tweedie deviance with parameter 2</span></span>
+<span id="cb2-36"><a href="#cb2-36" tabindex="-1"></a><span class="fu">deviance_gamma</span>(y_num, pred_num)</span>
+<span id="cb2-37"><a href="#cb2-37" tabindex="-1"></a><span class="co">#&gt; [1] 0.002633186</span></span>
+<span id="cb2-38"><a href="#cb2-38" tabindex="-1"></a><span class="fu">deviance_tweedie</span>(y_num, pred_num, <span class="at">tweedie_p =</span> <span class="dv">2</span>)</span>
+<span id="cb2-39"><a href="#cb2-39" tabindex="-1"></a><span class="co">#&gt; [1] 0.002633186</span></span></code></pre></div>
 </div>
 <div id="binary-classification" class="section level3">
 <h3>Binary classification</h3>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The data</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>y_cat <span class="ot">&lt;-</span> iris[[<span class="st">&quot;Species&quot;</span>]] <span class="sc">==</span> <span class="st">&quot;setosa&quot;</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>fit_cat <span class="ot">&lt;-</span> <span class="fu">glm</span>(y_cat <span class="sc">~</span> Sepal.Length, <span class="at">data =</span> iris, <span class="at">family =</span> <span class="fu">binomial</span>())</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>pred_cat <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit_cat, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Performance metrics</span></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="fu">AUC</span>(y_cat, pred_cat)                 <span class="co"># unweighted</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.9586</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">AUC</span>(y_cat, pred_cat, <span class="at">w =</span> weights)    <span class="co"># weighted</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.9629734</span></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="fu">logLoss</span>(y_cat, pred_cat)             <span class="co"># Log loss = binary cross-entropy</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.2394547</span></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="fu">deviance_bernoulli</span>(y_cat, pred_cat)  <span class="co"># Log Loss * 2</span></span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.4789093</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># The data</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>y_cat <span class="ot">&lt;-</span> iris[[<span class="st">&quot;Species&quot;</span>]] <span class="sc">==</span> <span class="st">&quot;setosa&quot;</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>fit_cat <span class="ot">&lt;-</span> <span class="fu">glm</span>(y_cat <span class="sc">~</span> Sepal.Length, <span class="at">data =</span> iris, <span class="at">family =</span> <span class="fu">binomial</span>())</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>pred_cat <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit_cat, <span class="at">type =</span> <span class="st">&quot;response&quot;</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co"># Performance metrics</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="fu">AUC</span>(y_cat, pred_cat)                 <span class="co"># unweighted</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="co">#&gt; [1] 0.9586</span></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="fu">AUC</span>(y_cat, pred_cat, <span class="at">w =</span> weights)    <span class="co"># weighted</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="co">#&gt; [1] 0.9629734</span></span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="fu">logLoss</span>(y_cat, pred_cat)             <span class="co"># Log loss = binary cross-entropy</span></span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a><span class="co">#&gt; [1] 0.2394547</span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a><span class="fu">deviance_bernoulli</span>(y_cat, pred_cat)  <span class="co"># Log Loss * 2</span></span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a><span class="co">#&gt; [1] 0.4789093</span></span></code></pre></div>
 </div>
 <div id="generalized-r-squared" class="section level3">
 <h3>Generalized R-squared</h3>
 <p>Furthermore, we provide a generalization of R-squared, defined as the
 proportion of deviance explained, i.e., one minus the ratio of residual
-deviance and intercept-only deviance, see <span class="citation">(<a href="#ref-cohen" role="doc-biblioref">Cohen 2003</a>)</span>.</p>
+deviance and intercept-only deviance, see <span class="citation">(<a href="#ref-cohen">Cohen 2003</a>)</span>.</p>
 <p>For out-of-sample calculations, the null deviance is ideally
 calculated from the average in the training data. This can be controlled
 by setting <code>reference_mean</code> to the (possibly weighted)
 average in the training data.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_num)<span class="sc">$</span>r.squared</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.8673123</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Same</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">r_squared</span>(y_num, pred_num)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.8673123</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">r_squared</span>(y_num, pred_num, <span class="at">deviance_function =</span> deviance_tweedie, <span class="at">tweedie_p =</span> <span class="dv">0</span>)</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; [1] 0.8673123</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">summary</span>(fit_num)<span class="sc">$</span>r.squared</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co">#&gt; [1] 0.8673123</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co"># Same</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="fu">r_squared</span>(y_num, pred_num)</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt; [1] 0.8673123</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="fu">r_squared</span>(y_num, pred_num, <span class="at">deviance_function =</span> deviance_tweedie, <span class="at">tweedie_p =</span> <span class="dv">0</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; [1] 0.8673123</span></span></code></pre></div>
 </div>
 <div id="pipe" class="section level3">
 <h3>Pipe</h3>
@@ -470,31 +470,31 @@ the function <code>performance()</code>: Starting from a data set with
 actual and predicted values (and optional case weights), it calculates
 one or more metrics. The resulting values are returned as a
 <code>data.frame</code>.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>fit_num <span class="ot">&lt;-</span> <span class="fu">lm</span>(Sepal.Length <span class="sc">~</span> ., <span class="at">data =</span> iris)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Regression with `Sepal.Length` as response</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">%&gt;%</span> </span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pred =</span> <span class="fu">predict</span>(fit_num, <span class="at">data =</span> .)) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">performance</span>(<span class="st">&quot;Sepal.Length&quot;</span>, <span class="st">&quot;pred&quot;</span>)</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>  metric    value</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>    rmse <span class="fl">0.300627</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Multiple measures</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">%&gt;%</span> </span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pred =</span> <span class="fu">predict</span>(fit_num, <span class="at">data =</span> .)) <span class="sc">%&gt;%</span> </span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">performance</span>(</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;Sepal.Length&quot;</span>, </span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;pred&quot;</span>, </span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">metrics =</span> <span class="fu">list</span>(<span class="at">rmse =</span> rmse, <span class="at">mae =</span> mae, <span class="st">`</span><span class="at">R-squared</span><span class="st">`</span> <span class="ot">=</span> r_squared)</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>    metric     value</span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>      rmse <span class="fl">0.3006270</span></span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span>       mae <span class="fl">0.2428628</span></span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="sc">&gt;</span> R<span class="sc">-</span>squared <span class="fl">0.8673123</span></span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>fit_num <span class="ot">&lt;-</span> <span class="fu">lm</span>(Sepal.Length <span class="sc">~</span> ., <span class="at">data =</span> iris)</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co"># Regression with `Sepal.Length` as response</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>iris <span class="sc">%&gt;%</span> </span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pred =</span> <span class="fu">predict</span>(fit_num, <span class="at">data =</span> .)) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>  <span class="fu">performance</span>(<span class="st">&quot;Sepal.Length&quot;</span>, <span class="st">&quot;pred&quot;</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>  </span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="sc">&gt;</span>  metric    value</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="sc">&gt;</span>    rmse <span class="fl">0.300627</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co"># Multiple measures</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>iris <span class="sc">%&gt;%</span> </span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pred =</span> <span class="fu">predict</span>(fit_num, <span class="at">data =</span> .)) <span class="sc">%&gt;%</span> </span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>  <span class="fu">performance</span>(</span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a>    <span class="st">&quot;Sepal.Length&quot;</span>, </span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a>    <span class="st">&quot;pred&quot;</span>, </span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a>    <span class="at">metrics =</span> <span class="fu">list</span>(<span class="at">rmse =</span> rmse, <span class="at">mae =</span> mae, <span class="st">`</span><span class="at">R-squared</span><span class="st">`</span> <span class="ot">=</span> r_squared)</span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a>  )</span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a><span class="sc">&gt;</span>    metric     value</span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a><span class="sc">&gt;</span>      rmse <span class="fl">0.3006270</span></span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a><span class="sc">&gt;</span>       mae <span class="fl">0.2428628</span></span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a><span class="sc">&gt;</span> R<span class="sc">-</span>squared <span class="fl">0.8673123</span></span></code></pre></div>
 </div>
 <div id="parametrized-scoring-functions" class="section level3">
 <h3>Parametrized scoring functions</h3>
@@ -510,42 +510,42 @@ one or more metrics. The resulting values are returned as a
 <p>It might be of key relevance to evaluate such function for varying
 <span class="math inline">\(p\)</span>. That is where the function
 <code>multi_metric()</code> shines.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ir <span class="ot">&lt;-</span> iris</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>ir<span class="sc">$</span>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit_num, <span class="at">data =</span> ir)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Create multiple Tweedie deviance functions</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>multi_Tweedie <span class="ot">&lt;-</span> <span class="fu">multi_metric</span>(deviance_tweedie, <span class="at">tweedie_p =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="at">by =</span> <span class="fl">0.2</span>)))</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>perf <span class="ot">&lt;-</span> <span class="fu">performance</span>(</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  ir, </span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">actual =</span> <span class="st">&quot;Sepal.Length&quot;</span>, </span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">predicted =</span> <span class="st">&quot;pred&quot;</span>,</span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">metrics =</span> multi_Tweedie, </span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">key =</span> <span class="st">&quot;Tweedie_p&quot;</span>, </span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">value =</span> <span class="st">&quot;deviance&quot;</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(perf)</span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   Tweedie_p    deviance</span></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 1         0 0.090376567</span></span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 2         1 0.015315945</span></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 3       1.2 0.010757362</span></span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 4       1.4 0.007559956</span></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 5       1.6 0.005316008</span></span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; 6       1.8 0.003740296</span></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Deviance against p</span></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(deviance <span class="sc">~</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(Tweedie_p)), <span class="at">data =</span> perf, <span class="at">type =</span> <span class="st">&quot;s&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a>ir <span class="ot">&lt;-</span> iris</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>ir<span class="sc">$</span>pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit_num, <span class="at">data =</span> ir)</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co"># Create multiple Tweedie deviance functions</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>multi_Tweedie <span class="ot">&lt;-</span> <span class="fu">multi_metric</span>(deviance_tweedie, <span class="at">tweedie_p =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">seq</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="at">by =</span> <span class="fl">0.2</span>)))</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>perf <span class="ot">&lt;-</span> <span class="fu">performance</span>(</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>  ir, </span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>  <span class="at">actual =</span> <span class="st">&quot;Sepal.Length&quot;</span>, </span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>  <span class="at">predicted =</span> <span class="st">&quot;pred&quot;</span>,</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>  <span class="at">metrics =</span> multi_Tweedie, </span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>  <span class="at">key =</span> <span class="st">&quot;Tweedie_p&quot;</span>, </span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>  <span class="at">value =</span> <span class="st">&quot;deviance&quot;</span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>)</span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="fu">head</span>(perf)</span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt;   Tweedie_p    deviance</span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt; 1         0 0.090376567</span></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="co">#&gt; 2         1 0.015315945</span></span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co">#&gt; 3       1.2 0.010757362</span></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="co">#&gt; 4       1.4 0.007559956</span></span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="co">#&gt; 5       1.6 0.005316008</span></span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a><span class="co">#&gt; 6       1.8 0.003740296</span></span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a><span class="co"># Deviance against p</span></span>
+<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a><span class="fu">plot</span>(deviance <span class="sc">~</span> <span class="fu">as.numeric</span>(<span class="fu">as.character</span>(Tweedie_p)), <span class="at">data =</span> perf, <span class="at">type =</span> <span class="st">&quot;s&quot;</span>)</span></code></pre></div>
 <p><img src="data:image/png;base64,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" /><!-- --></p>
 </div>
 <div id="murphy-diagrams" class="section level3">
 <h3>Murphy diagrams</h3>
 <p>The same logic as in the last example can be used to create so-called
-<em>Murphy diagrams</em> <span class="citation">(<a href="#ref-gneiting" role="doc-biblioref">Ehm et al. 2016</a>)</span>. The function
+<em>Murphy diagrams</em> <span class="citation">(<a href="#ref-gneiting">Ehm et al. 2016</a>)</span>. The function
 <code>murphy_diagram()</code> wraps above calls and allows to get
 elementary scores for one or multiple models across a range of theta
 values, see also R package <a href="https://CRAN.R-project.org/package=murphydiagram">murphydiagram</a>.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>two_models <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="at">m1 =</span> <span class="fl">1.1</span> <span class="sc">*</span> y, <span class="at">m2 =</span> <span class="fl">1.2</span> <span class="sc">*</span> y)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">murphy_diagram</span>(y, two_models, <span class="at">theta =</span> <span class="fu">seq</span>(<span class="fl">0.9</span>, <span class="fl">1.3</span>, <span class="at">by =</span> <span class="fl">0.01</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>two_models <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="at">m1 =</span> <span class="fl">1.1</span> <span class="sc">*</span> y, <span class="at">m2 =</span> <span class="fl">1.2</span> <span class="sc">*</span> y)</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a><span class="fu">murphy_diagram</span>(y, two_models, <span class="at">theta =</span> <span class="fu">seq</span>(<span class="fl">0.9</span>, <span class="fl">1.3</span>, <span class="at">by =</span> <span class="fl">0.01</span>))</span></code></pre></div>
 <p><img src="data:image/png;base64,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" /><!-- --></p>
 </div>
 </div>

@@ -21,10 +21,10 @@
 #' - For `accuracy()` and `classification_error()`: Any discrete input.
 #' - For `AUC()` and `gini_coefficient()`: Only `actual` must be in \eqn{\{0, 1\}}.
 #' - For `deviance_bernoulli()` and `logLoss()`: The values of `actual` must be in
-#'   \eqn{\{0, 1\}}, while `predicted` must be in the open interval \eqn{(0, 1)}.
+#'   \eqn{\{0, 1\}}, while `predicted` must be in the closed interval \eqn{[0, 1]}.
 #'
 #' @details
-#' Note that the function `AUC()` was originally modified from the {glmnet} package
+#' Note that the function `AUC()` was originally modified from the 'glmnet' package
 #' to ensure deterministic results. The unweighted version can be different from the
 #' weighted one with unit weights due to ties in `predicted`.
 #'
@@ -153,9 +153,27 @@ logLoss <- function(actual, predicted, w = NULL, ...) {
   stopifnot(
     length(actual) == length(predicted),
     all(actual == 0 | actual == 1),
-    all(predicted > 0 & predicted < 1)
+    all(predicted >= 0 & predicted <= 1)
   )
-  -weighted_mean(
-    actual * log(predicted) + (1 - actual) * log(1 - predicted), w = w, ...
-  )
+  losses <- -xlogy(actual, predicted) - xlogy(1 - actual, 1 - predicted)
+  weighted_mean(losses, w = w, ...)
+}
+
+# Helper function
+
+#' Calculates x*log(y)
+#'
+#' Internal function originally implemented in 'hstats'.
+#' Returns 0 whenever x = 0 and y >= 0.
+#'
+#' @noRd
+#' @keywords internal
+#'
+#' @param x A numeric vector/matrix.
+#' @param y A numeric vector/matrix.
+#' @returns A numeric vector or matrix.
+xlogy <- function(x, y) {
+  out <- x * log(y)
+  out[x == 0] <- 0
+  return(out)
 }

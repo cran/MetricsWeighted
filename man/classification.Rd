@@ -62,7 +62,7 @@ deviance (smaller is better).
 }
 }
 \details{
-Note that the function \code{AUC()} was originally modified from the {glmnet} package
+Note that the function \code{AUC()} was originally modified from the 'glmnet' package
 to ensure deterministic results. The unweighted version can be different from the
 weighted one with unit weights due to ties in \code{predicted}.
 }
@@ -74,7 +74,7 @@ need to be in \eqn{\{0, 1\}}.
 \item For \code{accuracy()} and \code{classification_error()}: Any discrete input.
 \item For \code{AUC()} and \code{gini_coefficient()}: Only \code{actual} must be in \eqn{\{0, 1\}}.
 \item For \code{deviance_bernoulli()} and \code{logLoss()}: The values of \code{actual} must be in
-\eqn{\{0, 1\}}, while \code{predicted} must be in the open interval \eqn{(0, 1)}.
+\eqn{\{0, 1\}}, while \code{predicted} must be in the closed interval \eqn{[0, 1]}.
 }
 }
 
